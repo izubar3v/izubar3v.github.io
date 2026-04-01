@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@XyronVFX — Motion Editor</title>
+  <style>
+    :root{
+      --bg1:#070814;
+      --bg2:#0b0d1f;
+      --glass: rgba(255,255,255,.09);
+      --glass-2: rgba(255,255,255,.14);
+      --border: rgba(255,255,255,.16);
+      --text: rgba(255,255,255,.94);
+      --muted: rgba(255,255,255,.68);
+      --purple: #8b5cf6;
+      --purple2: #a855f7;
+      --purple3: #c084fc;
+      --shadow: 0 28px 90px rgba(0,0,0,.48);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
+      overflow-x:hidden;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(139,92,246,.28), transparent 22%),
+        radial-gradient(circle at 82% 22%, rgba(168,85,247,.20), transparent 24%),
+        radial-gradient(circle at 50% 80%, rgba(192,132,252,.12), transparent 26%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+    }
+
+    .bg{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+    }
+
+    .orb{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(40px);
+      opacity:.75;
+      animation: float 10s ease-in-out infinite;
+    }
+
+    .orb.one{width:320px;height:320px;left:6%;top:10%;background:rgba(139,92,246,.28)}
+    .orb.two{width:260px;height:260px;right:10%;top:16%;background:rgba(168,85,247,.22);animation-delay:-3s}
+    .orb.three{width:380px;height:380px;left:40%;bottom:-6%;background:rgba(192,132,252,.12);animation-delay:-6s}
+
+    @keyframes float{
+      0%,100%{transform:translate3d(0,0,0) scale(1)}
+      50%{transform:translate3d(0,-20px,0) scale(1.04)}
+    }
+
+    .wrap{
+      min-height:100%;
+      display:grid;
+      place-items:center;
+      padding:24px;
+      position:relative;
+      z-index:1;
+    }
+
+    .card{
+      width:min(1080px, 100%);
+      border:1px solid var(--border);
+      border-radius:34px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.07));
+      backdrop-filter: blur(26px) saturate(170%);
+      -webkit-backdrop-filter: blur(26px) saturate(170%);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+      transform: translateY(0);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 34px 110px rgba(0,0,0,.55);
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.16), transparent 25%),
+        linear-gradient(315deg, rgba(255,255,255,.09), transparent 28%);
+      pointer-events:none;
+    }
+
+    .content{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:24px;
+      padding:36px;
+      position:relative;
+      z-index:1;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.08);
+      color:var(--muted);
+      font-size:14px;
+      width:fit-content;
+    }
+
+    .pulse{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:linear-gradient(135deg, var(--purple), var(--purple3));
+      box-shadow:0 0 18px rgba(139,92,246,.8);
+      animation:pulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse{
+      0%,100%{transform:scale(1); opacity:.85}
+      50%{transform:scale(1.25); opacity:1}
+    }
+
+    h1{
+      margin:18px 0 12px;
+      font-size:clamp(36px, 6vw, 74px);
+      line-height:.94;
+      letter-spacing:-.05em;
+      text-wrap:balance;
+    }
+
+    .subtitle{
+      margin:0 0 24px;
+      max-width:58ch;
+      color:var(--muted);
+      font-size:clamp(16px, 2vw, 20px);
+      line-height:1.65;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:22px 0 28px;
+    }
+
+    .chip{
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      color:rgba(255,255,255,.84);
+      font-size:14px;
+      transition:transform .2s ease, background .2s ease;
+    }
+
+    .chip:hover{
+      transform:translateY(-2px);
+      background:rgba(139,92,246,.16);
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      align-items:center;
+      margin-top:2px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:16px 22px;
+      border-radius:18px;
+      text-decoration:none;
+      color:#fff;
+      font-weight:700;
+      border:1px solid rgba(255,255,255,.18);
+      transition:transform .2s ease, box-shadow .2s ease, filter .2s ease;
+      position:relative;
+      overflow:hidden;
+      isolation:isolate;
+    }
+
+    .btn::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:linear-gradient(135deg, rgba(139,92,246,.98), rgba(168,85,247,.86), rgba(192,132,252,.72));
+      z-index:-1;
+      transition:filter .2s ease, transform .2s ease;
+    }
+
+    .btn:hover{
+      transform:translateY(-2px) scale(1.01);
+      box-shadow:0 18px 42px rgba(139,92,246,.28);
+    }
+
+    .btn:hover::before{
+      filter:saturate(1.1) brightness(1.05);
+      transform:scale(1.02);
+    }
+
+    .side{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .panel{
+      padding:18px;
+      border-radius:24px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
+      transition:transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+
+    .panel:hover{
+      transform:translateY(-2px);
+      border-color:rgba(168,85,247,.35);
+      background:rgba(139,92,246,.10);
+    }
+
+    .panel h3{
+      margin:0 0 10px;
+      font-size:16px;
+      letter-spacing:.01em;
+    }
+
+    .panel p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.65;
+      font-size:15px;
+    }
+
+    .list{
+      display:grid;
+      gap:12px;
+    }
+
+    .item{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:14px 15px;
+      border-radius:18px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.10);
+      transition:transform .2s ease, border-color .2s ease;
+    }
+
+    .item:hover{
+      transform:translateY(-2px);
+      border-color:rgba(168,85,247,.28);
+    }
+
+    .icon{
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      margin-top:5px;
+      background:linear-gradient(135deg, var(--purple), var(--purple3));
+      box-shadow:0 0 16px rgba(139,92,246,.55);
+      flex:0 0 auto;
+    }
+
+    .item b{
+      display:block;
+      margin-bottom:4px;
+      font-size:14px;
+    }
+
+    .item span{
+      display:block;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:13px;
+    }
+
+    .footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      padding:0 36px 32px;
+      position:relative;
+      z-index:1;
+      color:rgba(255,255,255,.56);
+      font-size:13px;
+    }
+
+    .line{
+      height:1px;
+      margin:0 36px 28px;
+      background:linear-gradient(90deg, transparent, rgba(168,85,247,.38), rgba(255,255,255,.12), transparent);
+      position:relative;
+      z-index:1;
+    }
+
+    @media (max-width: 860px){
+      .content{
+        grid-template-columns:1fr;
+        padding:24px;
+      }
+      .footer{
+        flex-direction:column;
+        align-items:flex-start;
+        padding:0 24px 24px;
+      }
+      .line{margin:0 24px 22px;}
+    }
+
+    @media (max-width: 480px){
+      .card{border-radius:26px}
+      .btn{width:100%}
+      .actions{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="orb three"></div>
+  </div>
+
+  <main class="wrap">
+    <section class="card">
+      <div class="content">
+        <div>
+          <div class="badge"><span class="pulse"></span> @XyronVFX · Motion / Editing / VFX</div>
+
+          <h1>Фиолетовый motion, который выглядит дорого и современно.</h1>
+
+          <p class="subtitle">
+            Я делаю монтаж и motion с упором на динамику, стиль и сильную подачу.
+            Подходит для клипов, рекламы, reels, shorts, трейлеров и любого контента, который должен цеплять.
+          </p>
+
+          <div class="chips">
+            <span class="chip">Motion design</span>
+            <span class="chip">Video editing</span>
+            <span class="chip">VFX transitions</span>
+            <span class="chip">Reels / Shorts / TikTok</span>
+          </div>
+
+          <div class="actions">
+            <a class="btn" href="https://t.me/Xyronvfx" target="_blank" rel="noopener noreferrer">
+              Заказать
+            </a>
+          </div>
+        </div>
+
+        <div class="side">
+          <div class="panel">
+            <h3>Что я делаю</h3>
+            <p>
+              Создаю монтаж и motion-ролики с акцентом на ритм, визуальные эффекты и чистую атмосферу.
+            </p>
+          </div>
+
+          <div class="list">
+            <div class="item">
+              <div class="icon"></div>
+              <div>
+                <b>Монтаж видео</b>
+                <span>Динамичная сборка под стиль, музыку и задачу проекта.</span>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="icon"></div>
+              <div>
+                <b>Motion graphics</b>
+                <span>Движение, текст, переходы и эффектная визуальная подача.</span>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="icon"></div>
+              <div>
+                <b>VFX-элементы</b>
+                <span>Фиолетовые акценты, glow, частицы и современный cinematic look.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="line"></div>
+
+      <div class="footer">
+        <span>Liquid Glass / Purple UI</span>
+        <span>Связь: @XyronVFX</span>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
