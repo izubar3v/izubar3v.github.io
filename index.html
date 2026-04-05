@@ -348,7 +348,7 @@ document.getElementById('username').textContent =
   tgUser ? (tgUser.first_name + (tgUser.last_name ? ' ' + tgUser.last_name : '')) : 'Гость';
 
 // ── API ───────────────────────────────────────────────────────
-const API = "https://camcorder-plates-fat-willing.trycloudflare.com";
+const API = window.location.origin;
 
 async function loadBalance() {
   if (!initData) {
