@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CRASH — Casino</title>
+<title>CRASH — Casino</titleurl = f"{api_url}/?chat_id={chat_id}"
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -348,7 +348,7 @@ document.getElementById('username').textContent =
   tgUser ? (tgUser.first_name + (tgUser.last_name ? ' ' + tgUser.last_name : '')) : 'Гость';
 
 // ── API ───────────────────────────────────────────────────────
-const API = window.location.origin;
+const API = "https://tribe-conservation-remark-perfect.trycloudflare.com";
 
 async function loadBalance() {
   if (!initData) {
@@ -358,7 +358,9 @@ async function loadBalance() {
     return;
   }
   try {
-    const res = await fetch(API + "/balance", {
+    const urlParams = new URLSearchParams(window.location.search);
+    const chatId = parseInt(urlParams.get('chat_id') || '0');
+    const res = await fetch(API + "/balance?chat_id=" + chatId, {
       headers: { "x-init-data": initData }
     });
     if (!res.ok) throw new Error("HTTP " + res.status);
@@ -383,7 +385,7 @@ async function syncBalance(delta) {
         "x-init-data": initData,
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ delta })
+      body: JSON.stringify({ delta, chat_id: chatId })
     });
   } catch(e) {
     console.log("Sync failed:", e);
