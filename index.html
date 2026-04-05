@@ -1,625 +1,816 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>CRASH — Neon Glass</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+  <title>@XyronVFX — Motion Editor</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg1: #080512;
-      --bg2: #0f0a1f;
-      --glass: rgba(255, 255, 255, 0.05);
-      --glass-border: rgba(255, 255, 255, 0.10);
+      /* Refined Dark Theme Colors */
+      --bg-main: #030108;
+      --bg-card: rgba(20, 15, 35, 0.4);
+      --bg-card-hover: rgba(30, 20, 50, 0.6);
       
-      --text: rgba(255, 255, 255, 0.96);
-      --muted: rgba(255, 255, 255, 0.50);
+      --border-light: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(168, 85, 247, 0.3);
       
-      --purple: #8b5cf6;
-      --purple2: #a855f7;
-      --pink: #d946ef;
-      --cyan: #22d3ee;
-      --red: #f43f5e;
-      --green: #10b981;
-      --gold: #fbbf24;
+      --text-main: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.65);
+      --text-dim: rgba(255, 255, 255, 0.4);
 
-      --shadow-glass: 0 16px 40px rgba(0, 0, 0, 0.3);
-      --glow-purple: 0 0 20px rgba(168, 85, 247, 0.4);
+      /* Accent Colors */
+      --accent-1: #a855f7; /* Purple */
+      --accent-2: #ec4899; /* Pink */
+      --accent-3: #3b82f6; /* Blue */
+      
+      /* Glows */
+      --glow-purple: 0 0 40px rgba(168, 85, 247, 0.3);
+      --glow-pink: 0 0 40px rgba(236, 72, 153, 0.3);
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    
     body {
-      font-family: 'Outfit', sans-serif;
-      color: var(--text);
-      background: radial-gradient(circle at 50% 0%, var(--bg2), var(--bg1) 80%);
-      min-height: 100vh;
+      font-family: 'Outfit', system-ui, sans-serif;
+      color: var(--text-main);
+      background-color: var(--bg-main);
       overflow-x: hidden;
-      position: relative;
-    }
-
-    /* Animated Background & Orbs */
-    .bg-layer { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
-    .orb {
-      position: absolute; border-radius: 50%; filter: blur(72px); mix-blend-mode: screen;
-      animation: float 14s ease-in-out infinite; will-change: transform;
-    }
-    .orb.a { width: 400px; height: 400px; left: -10%; top: -10%; background: radial-gradient(circle, rgba(168,85,247,0.2), transparent 60%); }
-    .orb.b { width: 350px; height: 350px; right: -5%; top: 30%; background: radial-gradient(circle, rgba(236,72,153,0.15), transparent 60%); animation-delay: -4s; }
-    .orb.c { width: 450px; height: 450px; left: 20%; bottom: -10%; background: radial-gradient(circle, rgba(34,211,238,0.1), transparent 60%); animation-delay: -8s; }
-    
-    .scan {
-      position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.4;
-      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.05) 3px, rgba(0,0,0,0.05) 4px);
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translate3d(0,0,0) scale(1); }
-      50% { transform: translate3d(0,-20px,0) scale(1.05); }
-    }
-
-    .app {
-      position: relative; z-index: 2;
-      max-width: 480px; margin: 0 auto;
-      padding: 16px; display: flex; flex-direction: column; gap: 16px;
       min-height: 100vh;
+      line-height: 1.6;
     }
 
-    /* Glass Panels */
-    .panel {
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
+    /* Fine noise texture */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Ambient Background Objects */
+    .bg-ambient {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .blur-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      mix-blend-mode: screen;
+      animation: float 20s ease-in-out infinite alternate;
+      opacity: 0.5;
+    }
+
+    .blur-orb.purple {
+      width: 600px; height: 600px;
+      top: -10%; left: -10%;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.15), transparent 70%);
+    }
+    
+    .blur-orb.pink {
+      width: 500px; height: 500px;
+      bottom: -10%; right: -5%;
+      background: radial-gradient(circle, rgba(236, 72, 153, 0.12), transparent 70%);
+      animation-delay: -5s;
+    }
+
+    .blur-orb.blue {
+      width: 400px; height: 400px;
+      top: 40%; left: 40%;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.08), transparent 70%);
+      animation-duration: 25s;
+    }
+
+    /* Floating Glass Shapes */
+    .glass-shape {
+      position: absolute;
+      border: 1px solid var(--border-light);
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      animation: drift 15s ease-in-out infinite alternate;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    .gs-1 { width: 100px; height: 100px; border-radius: 30px; top: 15%; left: 8%; transform: rotate(15deg); }
+    .gs-2 { width: 60px; height: 60px; border-radius: 50%; top: 65%; right: 12%; animation-duration: 12s; }
+
+    /* Layout */
+    .container {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    /* Typography */
+    h1, h2, h3, .heading-font {
+      font-family: 'Syne', sans-serif;
+    }
+
+    .text-gradient {
+      background: linear-gradient(to right, #fff, #a855f7, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% auto;
+      animation: textShine 6s linear infinite;
+    }
+
+    /* Animations */
+    @keyframes textShine {
+      to { background-position: 200% center; }
+    }
+    @keyframes float {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(30px, 50px); }
+    }
+    @keyframes drift {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(-30px) rotate(20deg); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4); }
+      50% { box-shadow: 0 0 0 8px rgba(168, 85, 247, 0); }
+    }
+
+    /* Hero Section */
+    .hero {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 40px;
+      padding: 56px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.1);
+      animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(168, 85, 247, 0.1);
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #e9d5ff;
+      margin-bottom: 24px;
+    }
+
+    .dot-indicator {
+      width: 8px; height: 8px;
+      background-color: var(--accent-1);
+      border-radius: 50%;
+      animation: pulse-glow 2s infinite;
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+
+    .hero p.subtitle {
+      font-size: clamp(16px, 1.5vw, 18px);
+      color: var(--text-muted);
+      font-weight: 300;
+      max-width: 90%;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    .tag {
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-light);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      border-color: var(--accent-1);
+      color: #fff;
+      background: rgba(168, 85, 247, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 32px;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      text-decoration: none;
+      border-radius: 20px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3), inset 0 1px 1px rgba(255,255,255,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: all 0.6s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 15px 40px rgba(236, 72, 153, 0.4), inset 0 1px 1px rgba(255,255,255,0.4);
+    }
+
+    .btn-primary:hover::after {
+      left: 100%;
+    }
+
+    .btn-primary svg { width: 20px; height: 20px; fill: currentColor; }
+
+    /* Services Side Panel */
+    .services-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .service-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-light);
+      padding: 24px;
       border-radius: 24px;
-      backdrop-filter: blur(16px) saturate(160%);
-      -webkit-backdrop-filter: blur(16px) saturate(160%);
-      box-shadow: var(--shadow-glass);
-      position: relative; overflow: hidden;
+      transition: all 0.3s ease;
     }
 
-    /* Header */
-    .header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 20px;
+    .service-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--border-hover);
+      transform: translateX(-5px);
     }
-    .logo { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; letter-spacing: 1px; }
-    .logo-accent { background: linear-gradient(90deg, var(--cyan), var(--purple2), var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .username { font-size: 13px; color: var(--muted); font-weight: 500; margin-top: 2px; }
-    
-    .balance-wrap {
-      display: flex; align-items: center; gap: 8px;
-      background: rgba(0,0,0,0.2); border-radius: 100px; padding: 6px 16px; border: 1px solid rgba(255,255,255,0.05);
-    }
-    .balance-amount { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: #fff; }
-    
-    /* Game Area */
-    .game-area { padding: 0; min-height: 250px; display: flex; align-items: center; justify-content: center; }
-    canvas { display: block; width: 100%; height: 250px; position: absolute; inset: 0; z-index: 1; }
 
-    .mult-overlay { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
-    .mult-label { font-size: 12px; font-weight: 600; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
-    .mult-val {
-      font-family: 'Syne', sans-serif; font-size: 64px; font-weight: 800; line-height: 1;
-      transition: color 0.2s, text-shadow 0.2s;
+    .service-card h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .c-neutral { color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.3); }
-    .c-green   { color: var(--cyan); text-shadow: 0 0 30px rgba(34,211,238,0.5); }
-    .c-red     { color: var(--red); text-shadow: 0 0 30px rgba(244,63,94,0.5); }
-    .mult-x { font-size: 24px; color: var(--muted); vertical-align: super; }
 
-    /* Countdown */
-    .countdown-wrap { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(8,5,18,0.6); backdrop-filter: blur(8px); transition: opacity 0.3s; }
-    .countdown-wrap.hidden { opacity: 0; pointer-events: none; }
-    .cdown-ring { position: relative; width: 100px; height: 100px; }
-    .cdown-ring svg { transform: rotate(-90deg); }
-    .cdown-track { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 4; }
-    .cdown-fill { fill: none; stroke: url(#gradient); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 283; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear; filter: drop-shadow(0 0 6px var(--purple2)); }
-    .cdown-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; }
-    .cdown-hint { margin-top: 16px; font-size: 14px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
-    
-    /* Badges */
-    .status-badge {
-      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 2;
-      font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-      padding: 6px 16px; border-radius: 100px; border: 1px solid; white-space: nowrap;
-      backdrop-filter: blur(8px);
+    .service-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
     }
-    .sb-wait    { background: rgba(255,255,255,0.05); color: var(--muted); border-color: rgba(255,255,255,0.1); }
-    .sb-run     { background: rgba(168,85,247,0.1); color: var(--purple2); border-color: rgba(168,85,247,0.3); box-shadow: 0 0 15px rgba(168,85,247,0.2); }
-    .sb-crash   { background: rgba(244,63,94,0.1); color: var(--red); border-color: rgba(244,63,94,0.3); }
-    .sb-cashout { background: rgba(34,211,238,0.1); color: var(--cyan); border-color: rgba(34,211,238,0.3); }
 
-    /* History */
-    .history-bar { display: flex; gap: 8px; overflow-x: auto; padding: 12px 16px; scrollbar-width: none; align-items: center; }
-    .history-bar::-webkit-scrollbar { display: none; }
-    .h-label { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-right: 4px; }
-    .hchip {
-      font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700;
-      padding: 4px 12px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+    /* Stats Section */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 24px;
     }
-    .hchip.low  { color: var(--muted); }
-    .hchip.mid  { color: var(--purple2); border-color: rgba(168,85,247,0.2); }
-    .hchip.high { color: var(--pink); border-color: rgba(217,70,239,0.3); box-shadow: 0 0 10px rgba(217,70,239,0.2); }
 
-    /* Bet Inputs */
-    .bet-panel { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
-    .bet-row { display: flex; align-items: center; gap: 12px; }
-    .bet-lbl { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; width: 60px; }
-    .bet-input {
-      flex: 1; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); border-radius: 12px;
-      color: #fff; font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700;
-      padding: 12px 16px; outline: none; transition: all 0.3s;
+    .stat-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 30px;
+      padding: 32px 24px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
     }
-    .bet-input:focus { border-color: var(--purple); box-shadow: 0 0 0 2px rgba(168,85,247,0.2); }
-    .bet-input:disabled { opacity: 0.4; }
 
-    /* Chips */
-    .qbets { display: flex; gap: 8px; }
-    .qb {
-      flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
-      color: #fff; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
-      padding: 10px 0; cursor: pointer; transition: all 0.2s;
+    .stat-box:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-5px);
+      box-shadow: var(--glow-purple);
     }
-    .qb:not(:disabled):active { transform: scale(0.95); background: rgba(168,85,247,0.2); }
-    .qb:disabled { opacity: 0.3; }
 
-    /* Auto Cashout */
-    .auto-row { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.05); }
-    .tgl-wrap { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-    .tgl { width: 44px; height: 24px; background: rgba(0,0,0,0.3); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); position: relative; transition: all 0.3s; }
-    .tgl.on { background: linear-gradient(90deg, var(--purple), var(--pink)); border-color: transparent; box-shadow: 0 0 15px rgba(217,70,239,0.3); }
-    .tgl::after { content:''; position:absolute; top:2px; left:2px; width:18px; height:18px; background:#fff; border-radius:50%; transition: transform 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-    .tgl.on::after { transform: translateX(20px); }
-    .tgl-lbl { font-size: 13px; font-weight: 600; color: #fff; }
-    
-    .auto-in-wrap { display: flex; align-items: center; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); border-radius: 10px; padding: 0 12px; transition: 0.3s; }
-    .auto-in-wrap:focus-within { border-color: var(--pink); box-shadow: 0 0 0 2px rgba(217,70,239,0.2); }
-    .auto-in { width: 60px; background: transparent; border: none; color: #fff; font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; padding: 10px 0; text-align: center; outline: none; }
-    .auto-in:disabled { opacity: 0.4; }
-
-    /* Main Button */
-    .btn-action {
-      width: 100%; padding: 20px; border: none; border-radius: 20px;
-      font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
-      cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;
+    .stat-number {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff, var(--accent-1));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      margin-bottom: 8px;
     }
-    .btn-action:not(:disabled):active { transform: scale(0.97); }
-    
-    .btn-place { 
-      background: linear-gradient(135deg, #6d28d9, #9333ea, #d946ef); color: #fff;
-      box-shadow: 0 10px 30px rgba(168,85,247,0.4); border: 1px solid rgba(255,255,255,0.1);
-    }
-    .btn-cashout { 
-      background: linear-gradient(135deg, #06b6d4, #22d3ee, #a855f7); color: #fff;
-      box-shadow: 0 10px 30px rgba(34,211,238,0.4); border: 1px solid rgba(255,255,255,0.2);
-    }
-    .btn-cancel { background: rgba(244,63,94,0.15); color: var(--red); border: 1px solid rgba(244,63,94,0.3); }
-    .btn-wait   { background: rgba(255,255,255,0.03); color: var(--muted); border: 1px solid var(--glass-border); cursor: not-allowed; }
 
-    /* Stats */
-    .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-    .stat-card { padding: 16px 12px; text-align: center; }
-    .stat-v { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 4px; }
-    .sv-g { background: linear-gradient(90deg, var(--cyan), #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .sv-r { color: var(--muted); }
-    .sv-o { background: linear-gradient(90deg, var(--purple2), var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .stat-l { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
-
-    /* Toasts */
-    .toast {
-      position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px);
-      background: rgba(15, 10, 31, 0.85); backdrop-filter: blur(16px);
-      border: 1px solid rgba(255,255,255,0.1); border-radius: 100px;
-      padding: 12px 24px; font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
-      z-index: 999; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); white-space: nowrap;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
-    .toast.show { transform: translateX(-50%) translateY(0); }
-    .tw { border-color: rgba(34,211,238,0.4); color: var(--cyan); box-shadow: 0 10px 30px rgba(34,211,238,0.2); }
-    .tl { border-color: rgba(244,63,94,0.4); color: var(--red); box-shadow: 0 10px 30px rgba(244,63,94,0.2); }
-    .ti { color: #fff; }
 
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin: 80px 0 40px;
+    }
+
+    .section-header h2 {
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .section-line {
+      flex-grow: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border-light), transparent);
+    }
+
+    /* Collab Section */
+    .collab-card {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 40px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .collab-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    .collab-content {
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent-2);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+
+    .collab-content h3 {
+      font-size: clamp(24px, 2.5vw, 36px);
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .collab-content p {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-bottom: 24px;
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 300px;
+      background: #000;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    /* Portfolio Grid */
+    .portfolio-header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 32px;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--text-main);
+    }
+
+    .btn-secondary svg { width: 16px; height: 16px; fill: currentColor; }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .video-card {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      aspect-ratio: 16/10;
+      background: #000;
+      border: 1px solid var(--border-light);
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .video-card.vertical {
+      aspect-ratio: 9/16;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    .video-thumb {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.6s ease;
+    }
+
+    .video-card:hover .video-thumb {
+      transform: scale(1.05);
+      filter: brightness(0.7);
+    }
+
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 24px;
+      transition: opacity 0.3s ease;
+    }
+
+    .play-icon {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      width: 64px; height: 64px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+
+    .play-icon svg {
+      width: 24px; height: 24px; fill: #fff;
+      transform: translateX(2px);
+    }
+
+    .video-card:hover .play-icon {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      background: var(--accent-1);
+      border-color: var(--accent-1);
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
+    }
+
+    .video-info h4 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      transform: translateY(10px);
+      opacity: 0.9;
+      transition: all 0.3s ease;
+    }
+
+    .video-card:hover .video-info h4 {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .video-card.playing .video-overlay,
+    .video-card.playing .play-icon {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    footer a:hover {
+      color: #fff;
+    }
+
+    /* Reveal Animation Classes */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 40px;
+      }
+      .collab-card {
+        grid-template-columns: 1fr;
+      }
+      .collab-content {
+        padding: 32px;
+      }
+      .video-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 40px 16px 60px; }
+      .stats-grid { grid-template-columns: 1fr; gap: 16px; }
+      .video-grid { grid-template-columns: 1fr; }
+      .portfolio-header-flex { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .hero { padding: 32px 24px; border-radius: 30px; }
+      .btn-primary { width: 100%; justify-content: center; }
+      .video-card.vertical { max-width: 100%; }
+    }
   </style>
 </head>
 <body>
 
-<div class="bg-layer">
-  <div class="orb a"></div>
-  <div class="orb b"></div>
-  <div class="orb c"></div>
-</div>
-<div class="scan"></div>
-
-<div class="toast" id="toast"></div>
-
-<div class="app">
-
-  <div class="panel header">
-    <div>
-      <div class="logo">CRASH<span class="logo-accent">.IO</span></div>
-      <div class="username" id="username">Гость</div>
-    </div>
-    <div class="balance-wrap">
-      <span class="balance-amount" id="balanceEl">...</span>
-      <span style="font-size: 16px;">🪙</span>
-    </div>
+  <div class="bg-ambient">
+    <div class="blur-orb purple"></div>
+    <div class="blur-orb pink"></div>
+    <div class="blur-orb blue"></div>
+    
+    <div class="glass-shape gs-1"></div>
+    <div class="glass-shape gs-2"></div>
   </div>
 
-  <div class="panel game-area">
-    <canvas id="cvs"></canvas>
+  <div class="container">
+    
+    <section class="hero reveal active">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <div class="dot-indicator"></div>
+          @XyronVFX · Motion & Editing
+        </div>
+        
+        <h1>Создаю видео,<br>которые <span class="text-gradient">досматривают.</span></h1>
+        <p class="subtitle">Монтаж, motion graphics, reels, shorts и реклама с акцентом на чистый визуал и эстетику Apple minimalism. Опыт работы более года.</p>
+        
+        <div class="tags-container">
+          <span class="tag">Motion Design</span>
+          <span class="tag">VFX Transitions</span>
+          <span class="tag">Reels / Shorts</span>
+          <span class="tag">Color Grading</span>
+        </div>
 
-    <div class="countdown-wrap" id="cdWrap">
-      <div class="cdown-ring">
-        <svg width="100" height="100" viewBox="0 0 100 100">
-          <defs>
-            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#a855f7" />
-              <stop offset="100%" stop-color="#d946ef" />
-            </linearGradient>
-          </defs>
-          <circle class="cdown-track" cx="50" cy="50" r="45"/>
-          <circle class="cdown-fill"  cx="50" cy="50" r="45" id="cdArc"/>
-        </svg>
-        <div class="cdown-num" id="cdSec">10</div>
+        <a href="https://t.me/Xyronvfx" target="_blank" rel="noopener noreferrer" class="btn-primary">
+          <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          Связаться в Telegram
+        </a>
       </div>
-      <div class="cdown-hint" id="cdHint">Ожидание игроков</div>
-    </div>
 
-    <div class="mult-overlay" id="multOverlay" style="opacity:0">
-      <div class="mult-label">Множитель</div>
-      <div class="mult-val c-neutral" id="multVal">1.00<span class="mult-x">×</span></div>
-    </div>
-
-    <div class="status-badge sb-wait" id="statusBadge">ОЖИДАНИЕ</div>
-  </div>
-
-  <div class="panel history-bar" id="histBar"></div>
-
-  <div class="panel bet-panel">
-    <div class="bet-row">
-      <div class="bet-lbl">Ставка</div>
-      <input type="number" class="bet-input" id="betInput" value="10" min="1" placeholder="0">
-    </div>
-
-    <div class="qbets">
-      <button class="qb" onclick="qBet(10)">10</button>
-      <button class="qb" onclick="qBet(50)">50</button>
-      <button class="qb" onclick="qBet(100)">100</button>
-      <button class="qb" onclick="qBet(250)">250</button>
-      <button class="qb" onclick="doubleBet()">×2</button>
-      <button class="qb" onclick="maxBet()">MAX</button>
-    </div>
-
-    <div class="auto-row">
-      <div class="tgl-wrap" onclick="toggleAuto()">
-        <div class="tgl" id="autoTgl"></div>
-        <div class="tgl-lbl">Авто-вывод</div>
+      <div class="services-panel">
+        <div class="service-card">
+          <h3><span style="color:var(--accent-1)">✦</span> Динамичный монтаж</h3>
+          <p>Повышаю удержание зрителя через правильный ритм и склейки.</p>
+        </div>
+        <div class="service-card">
+          <h3><span style="color:var(--accent-2)">✦</span> Motion Graphics</h3>
+          <p>Анимация графики и текста, которая усиливает подачу материала.</p>
+        </div>
+        <div class="service-card">
+          <h3><span style="color:var(--accent-3)">✦</span> VFX Элементы</h3>
+          <p>Современные эффекты для создания дорогой картинки.</p>
+        </div>
       </div>
-      <div class="auto-in-wrap">
-        <input type="number" class="auto-in" id="autoIn" value="2.00" step="0.10" min="1.10" disabled>
-        <span style="color:var(--purple2);font-family:'Syne',sans-serif;font-weight:700">×</span>
+    </section>
+
+    <section class="stats-grid reveal">
+      <div class="stat-box">
+        <div class="stat-number">20+</div>
+        <div class="stat-label">Успешных проектов</div>
       </div>
-    </div>
+      <div class="stat-box">
+        <div class="stat-number">1+</div>
+        <div class="stat-label">Год опыта в сфере</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Погружение в проект</div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="section-header">
+        <h2>Главный <span class="text-gradient">Кейс</span></h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="collab-card">
+        <div class="collab-content">
+          <div class="verified-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Verified Client
+          </div>
+          <h3>The Richey Family</h3>
+          <p>Полное ведение визуальной части контента. Работа над динамикой роликов, атмосферой и созданием целостного фирменного стиля для YouTube-канала.</p>
+          <div class="tags-container" style="margin-bottom: 0;">
+            <span class="tag">YouTube</span>
+            <span class="tag">Family Content</span>
+            <span class="tag">Motion</span>
+          </div>
+        </div>
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube.com/embed/4Zd9NG7xsnQ?rel=0&modestbranding=1" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="section-header" style="margin-bottom: 24px;">
+        <h2>Шоурил & <span class="text-gradient">Работы</span></h2>
+        <div class="section-line"></div>
+      </div>
+      
+      <div class="portfolio-header-flex">
+        <p style="color: var(--text-muted); max-width: 500px;">Примеры работ с использованием VFX, цветокоррекции и моушн-дизайна.</p>
+        <a href="https://t.me/XyronAE" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+          <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          Больше в Telegram
+        </a>
+      </div>
+
+      <div class="video-grid">
+        <div class="video-card" onclick="playVideo(this,'4Zd9NG7xsnQ')">
+          <div class="video-thumb" style="background-image:url('https://img.youtube.com/vi/4Zd9NG7xsnQ/maxresdefault.jpg')"></div>
+          <div class="video-overlay">
+            <div class="play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <div class="video-info">
+              <h4>Motion — The Richey Family</h4>
+              <div class="tags-container" style="margin:0; gap:6px;">
+                <span class="tag" style="padding: 4px 10px; font-size: 11px;">Motion</span>
+                <span class="tag" style="padding: 4px 10px; font-size: 11px;">VFX</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="video-card" onclick="playVideo(this,'j7zErAALfuc')">
+          <div class="video-thumb" style="background-image:url('https://img.youtube.com/vi/j7zErAALfuc/maxresdefault.jpg')"></div>
+          <div class="video-overlay">
+            <div class="play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <div class="video-info">
+              <h4>Portals Motion Style</h4>
+              <div class="tags-container" style="margin:0; gap:6px;">
+                <span class="tag" style="padding: 4px 10px; font-size: 11px;">Motion</span>
+                <span class="tag" style="padding: 4px 10px; font-size: 11px;">Design</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="video-card vertical" onclick="playVideo(this,'PV6MbWrp5ug')">
+          <div class="video-thumb" style="background-image:url('https://img.youtube.com/vi/PV6MbWrp5ug/maxresdefault.jpg')"></div>
+          <div class="video-overlay">
+            <div class="play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <div class="video-info">
+              <h4>Telegram Bot Motion</h4>
+              <div class="tags-container" style="margin:0; gap:6px;">
+                <span class="tag" style="padding: 4px 10px; font-size: 11px;">Shorts</span>
+                <span class="tag" style="padding: 4px 10px; font-size: 11px;">Promo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="reveal">
+      <div>© 2024 XyronVFX · Motion Editor</div>
+      <a href="https://t.me/Xyronvfx" target="_blank">@XyronVFX</a>
+    </footer>
+
   </div>
 
-  <button class="btn-action btn-place" id="btnAction" onclick="handleAction()">
-    СДЕЛАТЬ СТАВКУ
-  </button>
-
-  <div class="stats-row">
-    <div class="panel stat-card">
-      <div class="stat-v sv-g" id="sWins">0</div>
-      <div class="stat-l">Побед</div>
-    </div>
-    <div class="panel stat-card">
-      <div class="stat-v sv-r" id="sLoss">0</div>
-      <div class="stat-l">Сливов</div>
-    </div>
-    <div class="panel stat-card">
-      <div class="stat-v sv-o" id="sProfit">0</div>
-      <div class="stat-l">Профит</div>
-    </div>
-  </div>
-
-</div>
-
-<script>
-// ── TELEGRAM INIT ────────────────────────────────────────────────
-const tg = window.Telegram?.WebApp;
-if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor('#080512'); tg.setBackgroundColor('#080512'); }
-const tgUser = tg?.initDataUnsafe?.user;
-const initData = tg?.initData || "";
-document.getElementById('username').textContent = tgUser ? (tgUser.first_name) : 'Гость';
-
-// ── API & BALANCE ─────────────────────────────────────────────────
-const API = "https://tribe-conservation-remark-perfect.trycloudflare.com";
-const urlParams = new URLSearchParams(window.location.search);
-const chatId = parseInt(urlParams.get('chat_id') || '0');
-
-async function loadBalance() {
-  if (!initData) { balance = parseInt(localStorage.getItem('cb') || '1000'); updateUI(); return; }
-  try {
-    const res = await fetch(API + "/balance?chat_id=" + chatId, { headers: { "x-init-data": initData } });
-    if (!res.ok) throw new Error();
-    const data = await res.json();
-    balance = data.balance; localStorage.setItem('cb', balance); updateUI();
-  } catch(e) {
-    balance = parseInt(localStorage.getItem('cb') || '1000'); updateUI();
-  }
-}
-
-async function syncBalance(delta) {
-  localStorage.setItem('cb', balance);
-  if (!initData) return;
-  try {
-    await fetch(API + "/update_balance", {
-      method: "POST", headers: { "x-init-data": initData, "Content-Type": "application/json" },
-      body: JSON.stringify({ delta, chat_id: chatId })
-    });
-  } catch(e) {}
-}
-
-// ── STATE ────────────────────────────────────────────────────────
-let gameState   = 'waiting';
-let balance     = 0; 
-let betAmount   = 0;
-let hasBet      = false;
-let cashedOut   = false;
-let autoCashout = false;
-let autoAt      = 2.00;
-let crashPoint  = 1.00;
-let currentMult = 1.00;
-let points      = [];
-let startTime   = 0;
-let frameId     = null;
-let cdSecs      = 10;
-let cdInterval  = null;
-let history     = JSON.parse(localStorage.getItem('ch') || '[]');
-let stats       = JSON.parse(localStorage.getItem('cs') || '{"w":0,"l":0,"p":0}');
-const WAIT_SECS = 10;
-
-// ── NEON CANVAS ──────────────────────────────────────────────────
-const cvs = document.getElementById('cvs');
-const ctx = cvs.getContext('2d');
-function resizeCvs() { cvs.width = cvs.offsetWidth; cvs.height = cvs.offsetHeight; }
-resizeCvs(); window.addEventListener('resize', () => { resizeCvs(); drawCvs(); });
-
-function drawCvs() {
-  const W = cvs.width, H = cvs.height;
-  ctx.clearRect(0, 0, W, H);
-  if (points.length < 2) return;
-  
-  const maxX = points[points.length-1][0];
-  const maxY = Math.max(...points.map(p=>p[1]), 2);
-  const toX  = x => (x/maxX)*(W-24)+12;
-  const toY  = y => H-16 - ((y-1)/(maxY-1))*(H-36);
-  const crashed = gameState === 'crashed';
-  
-  // Background Grid
-  ctx.strokeStyle = 'rgba(255,255,255,0.03)'; ctx.lineWidth = 1;
-  for(let i=1;i<4;i++){ ctx.beginPath(); ctx.moveTo(0,H*i/4); ctx.lineTo(W,H*i/4); ctx.stroke(); }
-  
-  // Gradient Fill
-  const g = ctx.createLinearGradient(0,0,0,H);
-  g.addColorStop(0, crashed ? 'rgba(244,63,94,0.3)' : 'rgba(217,70,239,0.35)');
-  g.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.beginPath();
-  ctx.moveTo(toX(points[0][0]),toY(points[0][1]));
-  points.forEach(p=>ctx.lineTo(toX(p[0]),toY(p[1])));
-  const lp = points[points.length-1];
-  ctx.lineTo(toX(lp[0]),H); ctx.lineTo(toX(points[0][0]),H); ctx.closePath();
-  ctx.fillStyle = g; ctx.fill();
-  
-  // Neon Line
-  ctx.beginPath();
-  ctx.moveTo(toX(points[0][0]),toY(points[0][1]));
-  points.forEach(p=>ctx.lineTo(toX(p[0]),toY(p[1])));
-  ctx.strokeStyle = crashed ? '#f43f5e' : '#d946ef'; 
-  ctx.lineWidth = 4;
-  ctx.shadowColor = crashed ? '#f43f5e' : '#d946ef'; 
-  ctx.shadowBlur = 15;
-  ctx.stroke(); ctx.shadowBlur = 0;
-  
-  // Glowing Dot
-  const lx = toX(lp[0]), ly = toY(lp[1]);
-  ctx.beginPath(); ctx.arc(lx,ly,6,0,Math.PI*2);
-  ctx.fillStyle = '#fff';
-  ctx.shadowColor = crashed ? '#f43f5e' : '#d946ef'; 
-  ctx.shadowBlur = 20; 
-  ctx.fill(); 
-  ctx.strokeStyle = crashed ? '#f43f5e' : '#d946ef'; 
-  ctx.lineWidth = 3; ctx.stroke(); ctx.shadowBlur = 0;
-}
-
-function genCrash() {
-  const r = Math.random();
-  if (r < 0.06) return 1.00 + Math.random()*0.25;
-  if (r < 0.30) return 1.20 + Math.random()*0.70;
-  if (r < 0.55) return 1.80 + Math.random()*1.20;
-  if (r < 0.72) return 2.50 + Math.random()*2.50;
-  if (r < 0.85) return 4.00 + Math.random()*6.00;
-  return 8.00 + Math.random()*30.0;
-}
-
-// ── GAME LOGIC ───────────────────────────────────────────────────
-function startCountdown() {
-  gameState = 'waiting'; hasBet = false; cashedOut = false; betAmount = 0;
-  cdSecs = WAIT_SECS; points = []; currentMult = 1.00;
-
-  document.getElementById('cdWrap').classList.remove('hidden');
-  document.getElementById('multOverlay').style.opacity = '0';
-  setStatus('ПРИЕМ СТАВОК', 'sb-wait');
-  setQBtnsDisabled(false); document.getElementById('betInput').disabled = false;
-  updateBtn(); updateArc(WAIT_SECS); document.getElementById('cdSec').textContent = WAIT_SECS;
-
-  clearInterval(cdInterval);
-  cdInterval = setInterval(() => {
-    cdSecs--; document.getElementById('cdSec').textContent = cdSecs; updateArc(cdSecs);
-    if (cdSecs <= 0) { clearInterval(cdInterval); launchRound(); }
-  }, 1000);
-}
-
-function updateArc(cur) {
-  const pct = cur / WAIT_SECS;
-  document.getElementById('cdArc').style.strokeDashoffset = 283 - 283*pct;
-  const hint = document.getElementById('cdHint');
-  if (hasBet) hint.innerHTML = `Принято <span style="color:var(--cyan)">${fmtN(betAmount)} 🪙</span>`;
-  else hint.innerHTML = `Сделайте ставку`;
-}
-
-function launchRound() {
-  crashPoint = genCrash(); gameState = 'running'; startTime = performance.now(); points = [[0, 1]];
-
-  document.getElementById('cdWrap').classList.add('hidden');
-  document.getElementById('multOverlay').style.opacity = '1';
-  setStatus('В ИГРЕ', 'sb-run');
-  document.getElementById('betInput').disabled = true; setQBtnsDisabled(true); updateBtn();
-
-  function loop(now) {
-    const t = (now - startTime) / 1000;
-    currentMult = Math.pow(Math.E, t * 0.15); // Замедленная скорость
-
-    if (hasBet && !cashedOut && autoCashout && currentMult >= autoAt) doCashout();
-
-    if (currentMult >= crashPoint) {
-      currentMult = crashPoint; points.push([t, currentMult]); drawCvs(); onCrash(); return;
+  <script>
+    // Video Player Logic
+    function playVideo(card, id) {
+      const thumb = card.querySelector('.video-thumb');
+      thumb.style.backgroundImage = 'none';
+      thumb.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1" allowfullscreen allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:24px;"></iframe>`;
+      card.classList.add('playing');
+      card.onclick = null;
+      card.style.cursor = 'default';
     }
 
-    points.push([t, currentMult]); drawCvs(); setMultDisplay(currentMult, 'c-neutral');
-    if (hasBet && !cashedOut) document.getElementById('btnAction').textContent = 'ВЫВЕСТИ ' + fmtN(Math.floor(betAmount * currentMult));
-    frameId = requestAnimationFrame(loop);
-  }
-  frameId = requestAnimationFrame(loop);
-}
+    // Scroll Reveal Animation
+    const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
 
-function onCrash() {
-  cancelAnimationFrame(frameId); gameState = 'crashed';
-  setStatus('КРАШ ' + fmt(crashPoint) + '×', 'sb-crash');
-  setMultDisplay(crashPoint, 'c-red'); addHistory(parseFloat(fmt(crashPoint)));
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  if (hasBet && !cashedOut) {
-    stats.l++; stats.p -= betAmount;
-    saveAll(); // Исправлено: баланс уже списан при ставке
-    showToast('−' + fmtN(betAmount) + ' 🪙', 'tl');
-  }
-  hasBet = false; updateBtn(); setTimeout(startCountdown, 3000);
-}
-
-function doCashout() {
-  if (!hasBet || cashedOut) return;
-  cashedOut = true;
-  const totalWin = Math.floor(betAmount * currentMult);
-  const netProfit = totalWin - betAmount; // Чистая прибыль
-  
-  balance += totalWin; stats.w++; stats.p += netProfit; saveAll(totalWin);
-  showToast('+' + fmtN(netProfit) + ' забрал', 'tw'); // Как и просили!
-  
-  setMultDisplay(currentMult, 'c-green'); setStatus('ВЫВЕЛ ' + fmt(currentMult) + '×', 'sb-cashout');
-  updateBtn();
-}
-
-// ── BETS & BUTTONS ───────────────────────────────────────────────
-function placeBet() {
-  const v = parseInt(document.getElementById('betInput').value) || 0;
-  if (v < 1) { showToast('Минимум 1!', 'ti'); return; }
-  if (v > balance) { showToast('Недостаточно средств', 'tl'); return; }
-  betAmount = v; balance -= v; hasBet = true;
-  syncBalance(-v); localStorage.setItem('cb', balance);
-  updateUI(); updateBtn(); updateArc(cdSecs);
-  setQBtnsDisabled(true); document.getElementById('betInput').disabled = true;
-}
-
-function cancelBet() {
-  if (!hasBet || gameState !== 'waiting') return;
-  balance += betAmount; syncBalance(betAmount); localStorage.setItem('cb', balance);
-  betAmount = 0; hasBet = false;
-  updateUI(); updateBtn(); updateArc(cdSecs);
-  setQBtnsDisabled(false); document.getElementById('betInput').disabled = false;
-}
-
-function handleAction() {
-  if (gameState === 'waiting') { !hasBet ? placeBet() : cancelBet(); } 
-  else if (gameState === 'running') { if (hasBet && !cashedOut) doCashout(); }
-}
-
-function updateBtn() {
-  const btn = document.getElementById('btnAction');
-  if (gameState === 'waiting') {
-    if (!hasBet) { btn.className = 'btn-action btn-place'; btn.textContent = 'СДЕЛАТЬ СТАВКУ'; btn.disabled = false; } 
-    else { btn.className = 'btn-action btn-cancel'; btn.textContent = 'ОТМЕНИТЬ (' + fmtN(betAmount) + ')'; btn.disabled = false; }
-  } else if (gameState === 'running') {
-    if (!hasBet) { btn.className = 'btn-action btn-wait'; btn.textContent = 'ОЖИДАЙТЕ'; btn.disabled = true; } 
-    else if (cashedOut) { btn.className = 'btn-action btn-wait'; btn.textContent = 'УСПЕХ ✓'; btn.disabled = true; } 
-    else { btn.className = 'btn-action btn-cashout'; btn.textContent = 'ВЫВЕСТИ ' + fmtN(Math.floor(betAmount * currentMult)); btn.disabled = false; }
-  } else {
-    btn.className = 'btn-action btn-wait'; btn.textContent = 'ПОДГОТОВКА...'; btn.disabled = true;
-  }
-}
-
-// ── UTILS ─────────────────────────────────────────────────────────
-function canEditBet() { return gameState === 'waiting' && !hasBet; }
-function qBet(v) { if (canEditBet()) document.getElementById('betInput').value = Math.min(v, balance); }
-function doubleBet() { if(canEditBet()){ const c = parseInt(document.getElementById('betInput').value)||0; document.getElementById('betInput').value = Math.min(c*2||10, balance); } }
-function maxBet() { if(canEditBet()) document.getElementById('betInput').value = balance; }
-function setQBtnsDisabled(dis) { document.querySelectorAll('.qb').forEach(b => b.disabled = dis); }
-
-function toggleAuto() {
-  autoCashout = !autoCashout;
-  document.getElementById('autoTgl').className = 'tgl' + (autoCashout?' on':'');
-  document.getElementById('autoIn').disabled = !autoCashout;
-}
-document.getElementById('autoIn').addEventListener('change', function() {
-  autoAt = Math.max(1.1, parseFloat(this.value)||2.0); this.value = autoAt.toFixed(2);
-});
-
-function addHistory(v) {
-  history.unshift(v); if (history.length > 15) history.pop();
-  localStorage.setItem('ch', JSON.stringify(history)); renderHistory();
-}
-function renderHistory() {
-  const bar = document.getElementById('histBar'); bar.innerHTML = '<span class="h-label">ИСТОРИЯ</span>';
-  history.forEach(v => {
-    const c = document.createElement('span');
-    c.className = 'hchip ' + (v<1.5?'low':v<3?'mid':'high');
-    c.textContent = fmt(v)+'×'; bar.appendChild(c);
-  });
-}
-
-function setStatus(t, cls) { const el = document.getElementById('statusBadge'); el.textContent = t; el.className = 'status-badge ' + cls; }
-function setMultDisplay(v, cls) { const el = document.getElementById('multVal'); el.innerHTML = fmt(v) + '<span class="mult-x">×</span>'; el.className = 'mult-val ' + cls; }
-function fmt(n)  { return parseFloat(n).toFixed(2); }
-function fmtN(n) { return Math.round(n).toLocaleString('ru'); }
-
-function updateUI() {
-  document.getElementById('balanceEl').textContent = fmtN(balance);
-  document.getElementById('sWins').textContent = stats.w;
-  document.getElementById('sLoss').textContent = stats.l;
-  const el = document.getElementById('sProfit');
-  el.textContent = (stats.p>=0?'+':'') + fmtN(stats.p);
-  el.className = 'stat-v ' + (stats.p>0?'sv-g':stats.p<0?'sv-r':'sv-o');
-}
-
-function saveAll(delta) { localStorage.setItem('cs', JSON.stringify(stats)); updateUI(); if (delta !== undefined) syncBalance(delta); }
-
-let tTimer;
-function showToast(msg, cls) {
-  clearTimeout(tTimer); const t = document.getElementById('toast');
-  t.textContent = msg; t.className = 'toast ' + cls + ' show';
-  tTimer = setTimeout(() => t.classList.remove('show'), 2000);
-}
-
-document.getElementById('betInput').addEventListener('input', function() {
-  if (this.value !== '' && parseFloat(this.value) > balance) this.value = balance;
-  if (this.value !== '' && parseFloat(this.value) < 1) this.value = 1;
-});
-
-// ── BOOT ──────────────────────────────────────────────────────────
-renderHistory(); updateUI();
-loadBalance().then(() => startCountdown());
-</script>
+    // Optional Parallax for mouse move
+    if (window.matchMedia('(pointer:fine)').matches) {
+      const ambient = document.querySelector('.bg-ambient');
+      window.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 20;
+        const y = (e.clientY / window.innerHeight - 0.5) * 20;
+        ambient.style.transform = `translate(${-x}px, ${-y}px)`;
+      });
+    }
+  </script>
 </body>
 </html>
