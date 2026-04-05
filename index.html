@@ -378,17 +378,18 @@ document.getElementById('username').textContent =
   tgUser ? (tgUser.first_name + (tgUser.last_name ? ' ' + tgUser.last_name : '')) : 'Гость';
 
 // ── API ───────────────────────────────────────────────────────
+const API = "https://tribe-conservation-remark-perfect.trycloudflare.com";
 const urlParams = new URLSearchParams(window.location.search);
-const token = urlParams.get('token');
-
+const chatId = parseInt(urlParams.get('chat_id') || '0');
 async function loadBalance() {
-  if (!token) {
+  if (!initData) {
     balance = parseInt(localStorage.getItem('cb') || '1000');
     updateUI();
     return;
   }
   try {
-    const res = await fetch(`${API}/api/get_user_data?token=${token}`);
+    const res = await fetch(API + "/balance?chat_id=" + chatId, { headers: { "x-init-data": initData } });
+    if (!res.ok) throw new Error("HTTP " + res.status);
     const data = await res.json();
     balance = data.balance;
     localStorage.setItem('cb', balance);
@@ -399,14 +400,16 @@ async function loadBalance() {
   }
 }
 
-async function changeBalance(delta) {
-  if (!token) return;
-  await fetch(`${API}/api/update_balance`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token, delta })
-  });
-  await loadBalance();
+async function syncBalance(delta) {
+  localStorage.setItem('cb', balance);
+  if (!initData) return;
+  try {
+    await fetch(API + "/update_balance", {
+      method: "POST",
+      headers: { "x-init-data": initData, "Content-Type": "application/json" },
+      body: JSON.stringify({ delta, chat_id: chatId })
+    });
+  } catch(e) {}
 }
 
 // ── STATE ─────────────────────────────────────────────────────
