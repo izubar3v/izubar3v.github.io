@@ -511,7 +511,7 @@ function launchRound() {
 
   function loop(now) {
     const t = (now - startTime) / 1000;
-    currentMult = Math.pow(Math.E, t * 0.75);
+    currentMult = Math.pow(Math.E, t * 0.15);
 
     if (hasBet && !cashedOut && autoCashout && currentMult >= autoAt) {
       doCashout();
@@ -540,37 +540,40 @@ function launchRound() {
 
 // ── CRASH ────────────────────────────────────────────────────
 function onCrash() {
-  cancelAnimationFrame(frameId);
-  gameState = 'crashed';
-  setStatus('💥 КРАШ ' + fmt(crashPoint) + '×', 'sb-crash');
-  setMultDisplay(crashPoint, 'c-red');
-  addHistory(parseFloat(fmt(crashPoint)));
+  cancelAnimationFrame(frameId);
+  gameState = 'crashed';
+  setStatus('💥 КРАШ ' + fmt(crashPoint) + '×', 'sb-crash');
+  setMultDisplay(crashPoint, 'c-red');
+  addHistory(parseFloat(fmt(crashPoint)));
 
-  if (hasBet && !cashedOut) {
-    stats.l++; stats.p -= betAmount;
-    saveAll(-betAmount); // синхронизируем: проиграли ставку (уже вычтена при placeBet)
-    showToast('КРАШ! −' + fmtN(betAmount) + ' 🪙', 'tl');
-    spawnPts('red');
-  }
+  if (hasBet && !cashedOut) {
+    stats.l++; stats.p -= betAmount;
+    saveAll(); // ИСПРАВЛЕНО: убрали -betAmount, так как баланс уже списался при placeBet
+    showToast('Проигрыш: −' + fmtN(betAmount) + ' 🪙', 'tl');
+    spawnPts('red');
+  }
 
-  hasBet = false;
-  updateBtn();
-  setTimeout(startCountdown, 3000);
+  hasBet = false;
+  updateBtn();
+  setTimeout(startCountdown, 3000);
 }
-
 // ── CASHOUT ──────────────────────────────────────────────────
 function doCashout() {
-  if (!hasBet || cashedOut) return;
-  cashedOut = true;
-  const win = Math.floor(betAmount * currentMult);
-  balance += win;
-  stats.w++; stats.p += (win - betAmount);
-  saveAll(win); // синхронизируем: вернули ставку + выигрыш
-  showToast('+' + fmtN(win) + ' 🪙  при ' + fmt(currentMult) + '×', 'tw');
-  spawnPts('green');
-  setMultDisplay(currentMult, 'c-green');
-  setStatus('✓ КЭШАУТ ' + fmt(currentMult) + '×', 'sb-cashout');
-  updateBtn();
+  if (!hasBet || cashedOut) return;
+  cashedOut = true;
+  const totalWin = Math.floor(betAmount * currentMult);
+  const netProfit = totalWin - betAmount; // Считаем чистую прибыль
+    
+  balance += totalWin;
+  stats.w++; stats.p += netProfit;
+  saveAll(totalWin); // На сервер отправляем общий выигрыш (т.к. ставка уже списана)
+    
+  // В уведомлении показываем именно чистый плюс
+  showToast('Выигрыш: +' + fmtN(netProfit) + ' 🪙', 'tw'); 
+  spawnPts('green');
+  setMultDisplay(currentMult, 'c-green');
+  setStatus('✓ КЭШАУТ ' + fmt(currentMult) + '×', 'sb-cashout');
+  updateBtn();
 }
 
 // ── PLACE / CANCEL BET ───────────────────────────────────────
