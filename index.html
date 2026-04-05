@@ -258,7 +258,7 @@
     </div>
     <div class="balance-pill">
       <span>🪙</span>
-      <span class="balance-amount" id="balanceEl">1000</span>
+      <span class="balance-amount" id="balanceEl">...</span>
     </div>
   </div>
 
@@ -343,13 +343,56 @@
 const tg = window.Telegram?.WebApp;
 if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor('#070710'); tg.setBackgroundColor('#070710'); }
 const tgUser = tg?.initDataUnsafe?.user;
+const initData = tg?.initData || "";
 document.getElementById('username').textContent =
   tgUser ? (tgUser.first_name + (tgUser.last_name ? ' ' + tgUser.last_name : '')) : 'Гость';
 
+// ── API ───────────────────────────────────────────────────────
+const API = "https://camcorder-plates-fat-willing.trycloudflare.com";
+
+async function loadBalance() {
+  if (!initData) {
+    // Открыто не через бота — берём из localStorage
+    balance = parseInt(localStorage.getItem('cb') || '1000');
+    updateUI();
+    return;
+  }
+  try {
+    const res = await fetch(API + "/balance", {
+      headers: { "x-init-data": initData }
+    });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    balance = data.balance;
+    localStorage.setItem('cb', balance);
+    updateUI();
+  } catch(e) {
+    console.log("API недоступен, используем localStorage:", e);
+    balance = parseInt(localStorage.getItem('cb') || '1000');
+    updateUI();
+  }
+}
+
+async function syncBalance(delta) {
+  localStorage.setItem('cb', balance);
+  if (!initData) return;
+  try {
+    await fetch(API + "/update_balance", {
+      method: "POST",
+      headers: {
+        "x-init-data": initData,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ delta })
+    });
+  } catch(e) {
+    console.log("Sync failed:", e);
+  }
+}
+
 // ── STATE ─────────────────────────────────────────────────────
-// 'waiting' → (10s) → 'running' → (crash) → (3s) → 'waiting'
 let gameState   = 'waiting';
-let balance     = parseInt(localStorage.getItem('cb') || '1000');
+let balance     = 0; // загружается из API
 let betAmount   = 0;
 let hasBet      = false;
 let cashedOut   = false;
@@ -504,10 +547,9 @@ function onCrash() {
 
   if (hasBet && !cashedOut) {
     stats.l++; stats.p -= betAmount;
-    saveAll();
+    saveAll(-betAmount); // синхронизируем: проиграли ставку (уже вычтена при placeBet)
     showToast('КРАШ! −' + fmtN(betAmount) + ' 🪙', 'tl');
     spawnPts('red');
-    sendBot(false, 0, crashPoint);
   }
 
   hasBet = false;
@@ -522,12 +564,11 @@ function doCashout() {
   const win = Math.floor(betAmount * currentMult);
   balance += win;
   stats.w++; stats.p += (win - betAmount);
-  saveAll();
+  saveAll(win); // синхронизируем: вернули ставку + выигрыш
   showToast('+' + fmtN(win) + ' 🪙  при ' + fmt(currentMult) + '×', 'tw');
   spawnPts('green');
   setMultDisplay(currentMult, 'c-green');
   setStatus('✓ КЭШАУТ ' + fmt(currentMult) + '×', 'sb-cashout');
-  sendBot(true, win, currentMult);
   updateBtn();
 }
 
@@ -539,7 +580,10 @@ function placeBet() {
   betAmount = v;
   balance -= v;
   hasBet = true;
-  saveAll();
+  // Сразу синхронизируем списание ставки
+  syncBalance(-v);
+  localStorage.setItem('cb', balance);
+  updateUI();
   updateBtn();
   updateArc(cdSecs);
   setQBtnsDisabled(true);
@@ -549,8 +593,12 @@ function placeBet() {
 
 function cancelBet() {
   if (!hasBet || gameState !== 'waiting') return;
-  balance += betAmount; betAmount = 0; hasBet = false;
-  saveAll();
+  balance += betAmount;
+  // Возвращаем ставку
+  syncBalance(betAmount);
+  localStorage.setItem('cb', balance);
+  betAmount = 0; hasBet = false;
+  updateUI();
   updateBtn();
   updateArc(cdSecs);
   setQBtnsDisabled(false);
@@ -678,10 +726,10 @@ function updateUI() {
   el.className = 'stat-v ' + (p>0?'sv-g':p<0?'sv-r':'sv-o');
 }
 
-function saveAll() {
-  localStorage.setItem('cb', balance);
+function saveAll(delta) {
   localStorage.setItem('cs', JSON.stringify(stats));
   updateUI();
+  if (delta !== undefined) syncBalance(delta);
 }
 
 // ── TOAST ─────────────────────────────────────────────────────
@@ -707,12 +755,6 @@ function spawnPts(color) {
   }
 }
 
-// ── BOT ───────────────────────────────────────────────────────
-function sendBot(won, amount, mult) {
-  if (!tg) return;
-  try { tg.sendData(JSON.stringify({action:'crash_result',won,amount,multiplier:parseFloat(fmt(mult)),balance,user_id:tgUser?.id})); } catch(e){}
-}
-
 // ── INPUT GUARD ───────────────────────────────────────────────
 document.getElementById('betInput').addEventListener('input', function() {
   if (this.value !== '' && parseFloat(this.value) > balance) this.value = balance;
@@ -722,7 +764,8 @@ document.getElementById('betInput').addEventListener('input', function() {
 // ── BOOT ──────────────────────────────────────────────────────
 renderHistory();
 updateUI();
-startCountdown();
+// Загружаем баланс из бота, потом запускаем игру
+loadBalance().then(() => startCountdown());
 </script>
 </body>
 </html>
