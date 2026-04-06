@@ -1049,10 +1049,23 @@ function updateMinesMultText() {
 
 function calcMinesMult(hits, totalMines) {
   if (hits === 0) return 1.00;
+  
   let prob = 1.0;
-  for (let i = 0; i < hits; i++) { prob *= (25 - totalMines - i) / (25 - i); }
-  return 0.97 / prob; // 3% house edge
+  for (let i = 0; i < hits; i++) { 
+    prob *= (25 - totalMines - i) / (25 - i); 
+  }
+  
+  let fairMult = 1 / prob; // 1. Высчитываем абсолютно честный коэффициент (например, 1.13)
+  let profit = fairMult - 1; // 2. Выделяем только "навар" (0.13)
+  
+  // 3. Умножаем ПРИБЫЛЬ на ваш процент отдачи. 
+  // 0.80 означает, что казино забирает 20% от чистого выигрыша себе.
+  // Можете ставить тут хоть 0.50 (забирать половину), коэффициент все равно не упадет ниже 1.x
+  let finalMult = 1 + (profit * 0.80); 
+  
+  return finalMult; 
 }
+
 
 function startMines() {
   const bet = parseInt(document.getElementById('minesBetInput').value) || 0;
