@@ -580,9 +580,8 @@ let gamesSinceBotCrash = 0, targetBotGameCrash = Math.floor(Math.random() * 8) +
 let gamesSinceBotRoul = 0, targetBotGameRoul = Math.floor(Math.random() * 8) + 5; 
 let activeBotsCrash = [], activeBotsRoul = [], botJoinTimers = [];
 
-function updateBalance() { 
-  document.getElementById('balanceEl').textContent = fmtN(balance); 
-}
+let emTimeout = null; function updateBalance() { document.getElementById('balanceEl').textContent = fmtN(balance); if (balance <= 0 && !emergencyActive) { clearTimeout(emTimeout); emTimeout = setTimeout(showEmergency, 1200); } }
+
 
 function updateAllStats() {
   document.getElementById('sWins').textContent = crashStats.w; document.getElementById('sLoss').textContent = crashStats.l;
@@ -820,7 +819,12 @@ function doCashout() {
 function placeBet() {
   const v = parseInt(document.getElementById('betInput').value) || 0;
   if (v < 1) { showToast('Минимум 1!', 'ti'); return; }
-  if (v > balance) { showToast('Недостаточно средств', 'tl'); return; }
+  if (v > balance) { 
+  showToast('Недостаточно средств', 'tl'); 
+    if (balance <= 0) showEmergency(); 
+    return; 
+  }
+
   betAmount = v; balance -= v; hasBet = true; syncBalance(-v); updateBalance(); updateBtn(); updateArc(cdSecs);
   setQBtnsDisabled(true); document.getElementById('betInput').disabled = true; renderBots('crash');
 }
@@ -941,7 +945,8 @@ function spinRoulette() {
   const bet = parseInt(document.getElementById('roulBetInput').value) || 0;
   if (!roulBetType) { showToast('Выберите цвет!', 'ti'); return; }
   if (bet < 1) { showToast('Минимум 1!', 'ti'); return; }
-  if (bet > balance){ showToast('Недостаточно средств', 'tl'); return; }
+  if (bet > balance) { showToast('Недостаточно средств', 'tl'); if (balance <= 0) showEmergency(); return; }
+
 
   balance -= bet; syncBalance(-bet); updateBalance();
   isSpinning = true; hasBetRoul = true; lastRoulBet = bet; lastRoulType = roulBetType;
@@ -1072,7 +1077,7 @@ function startMines() {
   const bet = parseInt(document.getElementById('minesBetInput').value) || 0;
   const count = parseInt(document.getElementById('minesCountInput').value) || 3;
   if(bet < 1) { showToast('Минимум 1!', 'ti'); return; }
-  if(bet > balance) { showToast('Недостаточно средств', 'tl'); return; }
+  if (bet > balance) { showToast('Недостаточно средств', 'tl'); if (balance <= 0) showEmergency(); return; }
   if(count < 1 || count > 24) { showToast('От 1 до 24 мин', 'ti'); return; }
 
   balance -= bet; syncBalance(-bet); updateBalance();
