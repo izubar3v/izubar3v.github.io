@@ -535,7 +535,23 @@ document.addEventListener('pointerdown', (e) => {
 });
 
 // ═══════════════════════════════════════════════
-//  TELEGRAM
+//  SHARED UTILS (ВОЗВРАЩЕНЫ!)
+// ═══════════════════════════════════════════════
+function fmt(n)  { return parseFloat(n).toFixed(2); }
+function fmtN(n) { return Math.round(n).toLocaleString('ru'); }
+
+let tTimer;
+function showToast(msg, cls) {
+  clearTimeout(tTimer);
+  const t = document.getElementById('toast');
+  if(t) {
+    t.textContent = msg; t.className = 'toast ' + cls + ' show';
+    tTimer = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  TELEGRAM & API
 // ═══════════════════════════════════════════════
 const tg = window.Telegram?.WebApp;
 if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor('#08080F'); tg.setBackgroundColor('#08080F'); }
@@ -546,7 +562,9 @@ document.getElementById('username').textContent = playerName;
 
 const API = 'https://tribe-conservation-remark-perfect.trycloudflare.com';
 const urlParams = new URLSearchParams(window.location.search);
-const chatId = parseInt(urlParams.get('chat_id') || '0');
+
+// Надежное получение chat_id
+const chatId = tgUser?.id || parseInt(urlParams.get('chat_id') || '0');
 
 // ═══════════════════════════════════════════════
 //  SHARED STATE & BOTS LOGIC
@@ -561,7 +579,9 @@ let gamesSinceBotCrash = 0, targetBotGameCrash = Math.floor(Math.random() * 8) +
 let gamesSinceBotRoul = 0, targetBotGameRoul = Math.floor(Math.random() * 8) + 5; 
 let activeBotsCrash = [], activeBotsRoul = [], botJoinTimers = [];
 
-function updateBalance() { document.getElementById('balanceEl').textContent = fmtN(balance); }
+function updateBalance() { 
+  document.getElementById('balanceEl').textContent = fmtN(balance); 
+}
 
 function updateAllStats() {
   document.getElementById('sWins').textContent = crashStats.w; document.getElementById('sLoss').textContent = crashStats.l;
@@ -578,13 +598,25 @@ function updateAllStats() {
 }
 
 async function loadBalance() {
-  if (!initData) { balance = parseInt(localStorage.getItem('cb') || '1000'); updateBalance(); return; }
+  if (!initData) { 
+    balance = parseInt(localStorage.getItem('cb') || '1000'); 
+    updateBalance(); return; 
+  }
   try {
     const res = await fetch(API + '/balance?chat_id=' + chatId, { headers: { 'x-init-data': initData } });
-    if (!res.ok) throw new Error(); const data = await res.json();
-    balance = data.balance; localStorage.setItem('cb', balance); updateBalance();
-  } catch(e) { balance = parseInt(localStorage.getItem('cb') || '1000'); updateBalance(); }
+    if (!res.ok) throw new Error(); 
+    const data = await res.json();
+    balance = parseInt(data.balance);
+    if(isNaN(balance)) balance = 0;
+    localStorage.setItem('cb', balance); 
+    updateBalance();
+  } catch(e) { 
+    balance = parseInt(localStorage.getItem('cb') || '1000'); 
+    if(isNaN(balance)) balance = 1000;
+    updateBalance(); 
+  }
 }
+
 async function syncBalance(delta) {
   localStorage.setItem('cb', balance);
   if (!initData) return;
@@ -614,6 +646,7 @@ function renderBots(gameType) {
 
   if (totalItems === 0) list.innerHTML = '<div style="color:var(--muted);font-size:11px;text-align:center;padding:10px 0;">Пока нет ставок...</div>';
 }
+
 function renderBotItem(list, name, bet, winMult, type, isCrashed) {
   const item = document.createElement('div'); item.className = 'ob-item';
   if (name === playerName) item.style.border = '1px solid rgba(140,80,255,0.4)';
@@ -828,7 +861,7 @@ function saveCrashStats(delta) { localStorage.setItem('cs',JSON.stringify(crashS
 
 
 // ═══════════════════════════════════════════════
-//  ROULETTE GAME (REMOVED GREEN)
+//  ROULETTE GAME
 // ═══════════════════════════════════════════════
 const WHEEL_NUMS = [32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,'B',10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
 const RED_SET    = new Set([1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]);
