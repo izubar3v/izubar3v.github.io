@@ -564,7 +564,8 @@ const API = 'https://tribe-conservation-remark-perfect.trycloudflare.com';
 const urlParams = new URLSearchParams(window.location.search);
 
 // Надежное получение chat_id
-const chatId = tgUser?.id || parseInt(urlParams.get('chat_id') || '0');
+const chatId = tg?.initDataUnsafe?.chat?.id || parseInt(urlParams.get('chat_id')) || tgUser?.id || 0;
+
 
 // ═══════════════════════════════════════════════
 //  SHARED STATE & BOTS LOGIC
