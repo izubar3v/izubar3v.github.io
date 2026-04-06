@@ -97,9 +97,7 @@ body::after {
   50%  { box-shadow: inset 0 0 50px rgba(57,255,142,0.3), 0 0 40px rgba(57,255,142,0.4); border-color: var(--green); }
   100% { box-shadow: 0 0 0 rgba(57,255,142,0); border-color: var(--border); }
 }
-.win-pulse {
-  animation: winPulse 1s ease-out;
-}
+.win-pulse { animation: winPulse 1s ease-out; }
 
 /* ── GAME AREA (shared) ────────────────────── */
 .game-area {
@@ -114,34 +112,19 @@ body::after {
 
 /* ── CRASH CANVAS ───────────────────────────── */
 #cvs { display:block; width:100%; height:220px; position:relative; z-index:1; }
-
-/* ── АНИМАЦИИ ВИДЕО (CRASH) ─────────────────── */
 .anim-vid {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain; 
-  z-index: 2; 
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s;
-  mix-blend-mode: screen; 
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: contain; z-index: 2; opacity: 0; pointer-events: none;
+  transition: opacity 0.2s; mix-blend-mode: screen; 
 }
 .anim-vid.show { opacity: 1; }
 
-/* ── УЛУЧШЕННЫЙ И ПЕРЕМЕЩЕННЫЙ МНОЖИТЕЛЬ ───── */
 .mult-overlay {
   position:absolute; top:12px; left:50%; transform:translateX(-50%); z-index:5;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
-  pointer-events:none;
-  background: rgba(13, 13, 26, 0.85); /* Темная подложка, чтобы не сливалось с видео */
-  padding: 6px 20px;
-  border-radius: 16px;
-  border: 1px solid var(--border2);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  pointer-events:none; background: rgba(13, 13, 26, 0.85); 
+  padding: 6px 20px; border-radius: 16px; border: 1px solid var(--border2);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
 }
 .mult-label { font-size:9px; font-weight:700; letter-spacing:2px; color:var(--muted); text-transform:uppercase; margin-bottom:2px; }
 .mult-val {
@@ -155,20 +138,14 @@ body::after {
 
 /* ── COUNTDOWN ──────────────────────────────── */
 .countdown-wrap {
-  position:absolute; inset:0; z-index:10;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  background:rgba(8,8,15,0.72); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
-  transition:opacity .35s; gap:16px;
+  position:absolute; inset:0; z-index:10; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  background:rgba(8,8,15,0.72); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); transition:opacity .35s; gap:16px;
 }
 .countdown-wrap.hidden { opacity:0; pointer-events:none; }
 .cdown-ring { position:relative; width:88px; height:88px; }
 .cdown-ring svg { transform:rotate(-90deg); }
 .cdown-track { fill:none; stroke:rgba(140,80,255,0.12); stroke-width:5; }
-.cdown-fill  {
-  fill:none; stroke:var(--violet); stroke-width:5; stroke-linecap:round;
-  stroke-dasharray:283; stroke-dashoffset:0; transition:stroke-dashoffset 1s linear;
-  filter:drop-shadow(0 0 5px var(--violet));
-}
+.cdown-fill  { fill:none; stroke:var(--violet); stroke-width:5; stroke-linecap:round; stroke-dasharray:283; stroke-dashoffset:0; transition:stroke-dashoffset 1s linear; filter:drop-shadow(0 0 5px var(--violet)); }
 .cdown-num  { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
 .cdown-sec  { font-family:var(--font-mono); font-size:28px; font-weight:700; color:var(--neon2); }
 .cdown-hint { font-size:12px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; text-align:center; }
@@ -200,77 +177,37 @@ body::after {
 .hchip.high { background:rgba(255,189,63,0.11); color:var(--gold); border:1px solid rgba(255,189,63,0.22); }
 
 /* ── BET PANEL (shared) ─────────────────────── */
-.bet-panel {
-  background:var(--panel); border-radius:var(--rad2); border:1px solid var(--border2);
-  padding:16px; display:flex; flex-direction:column; gap:13px;
-}
+.bet-panel { background:var(--panel); border-radius:var(--rad2); border:1px solid var(--border2); padding:16px; display:flex; flex-direction:column; gap:13px; }
 .section-label { font-size:10px; font-weight:700; letter-spacing:2px; color:var(--muted); text-transform:uppercase; font-family:var(--font-mono); margin-bottom:-3px; }
-.bet-input-wrap {
-  flex:1; display:flex; align-items:center;
-  background:var(--panel2); border-radius:10px; border:1px solid var(--border2);
-  transition:border-color .2s;
-}
+.bet-input-wrap { flex:1; display:flex; align-items:center; background:var(--panel2); border-radius:10px; border:1px solid var(--border2); transition:border-color .2s; }
 .bet-input-wrap:focus-within { border-color:var(--violet); box-shadow:0 0 0 3px rgba(140,80,255,0.1); }
-.bet-input {
-  flex:1; background:transparent; border:none; color:var(--text);
-  font-family:var(--font-mono); font-size:18px; font-weight:700;
-  padding:11px 14px; outline:none; -moz-appearance:textfield;
-}
+.bet-input { flex:1; background:transparent; border:none; color:var(--text); font-family:var(--font-mono); font-size:18px; font-weight:700; padding:11px 14px; outline:none; -moz-appearance:textfield; }
 .bet-input::-webkit-outer-spin-button,.bet-input::-webkit-inner-spin-button { -webkit-appearance:none; }
 .bet-input:disabled { opacity:.4; }
 .bet-coin { padding-right:12px; font-size:14px; color:var(--muted); }
 .qbets { display:flex; gap:6px; }
-.qb {
-  flex:1; background:var(--panel2); border:1px solid var(--border2);
-  border-radius:8px; color:var(--muted); font-family:var(--font-mono); font-size:12px; font-weight:700;
-  padding:9px 2px; cursor:pointer; text-align:center; transition:all .15s;
-}
+.qb { flex:1; background:var(--panel2); border:1px solid var(--border2); border-radius:8px; color:var(--muted); font-family:var(--font-mono); font-size:12px; font-weight:700; padding:9px 2px; cursor:pointer; text-align:center; transition:all .15s; }
 .qb:not(:disabled):hover { border-color:var(--violet); color:var(--neon); background:var(--violet-dim); }
 .qb:not(:disabled):active { transform:scale(0.94); }
 .qb:disabled { opacity:.3; cursor:not-allowed; }
 
-/* Auto cashout */
 .auto-row { display:flex; align-items:center; gap:10px; justify-content:space-between; }
 .tgl-wrap { display:flex; align-items:center; gap:10px; cursor:pointer; }
-.tgl {
-  width:46px; height:26px; background:var(--panel2); border-radius:13px;
-  position:relative; transition:background .3s; border:1px solid var(--border2); flex-shrink:0;
-}
+.tgl { width:46px; height:26px; background:var(--panel2); border-radius:13px; position:relative; transition:background .3s; border:1px solid var(--border2); flex-shrink:0; }
 .tgl.on { background:linear-gradient(135deg,var(--violet),#5520C8); border-color:var(--violet); box-shadow:0 0 12px rgba(140,80,255,0.4); }
-.tgl::after {
-  content:''; position:absolute; top:2px; left:2px;
-  width:20px; height:20px; background:white; border-radius:50%;
-  transition:transform .3s; box-shadow:0 2px 6px rgba(0,0,0,0.4);
-}
+.tgl::after { content:''; position:absolute; top:2px; left:2px; width:20px; height:20px; background:white; border-radius:50%; transition:transform .3s; box-shadow:0 2px 6px rgba(0,0,0,0.4); }
 .tgl.on::after { transform:translateX(20px); }
 .tgl-lbl { font-size:13px; font-weight:600; color:var(--text); }
-.auto-in-wrap {
-  display:flex; align-items:center; gap:6px;
-  background:var(--panel2); border-radius:10px; border:1px solid var(--border2);
-  padding:0 10px; transition:border-color .2s;
-}
+.auto-in-wrap { display:flex; align-items:center; gap:6px; background:var(--panel2); border-radius:10px; border:1px solid var(--border2); padding:0 10px; transition:border-color .2s; }
 .auto-in-wrap:focus-within { border-color:var(--violet); }
-.auto-in {
-  width:60px; background:transparent; border:none; color:var(--text);
-  font-family:var(--font-mono); font-size:15px; font-weight:700;
-  padding:10px 0; outline:none; text-align:center; -moz-appearance:textfield;
-}
+.auto-in { width:60px; background:transparent; border:none; color:var(--text); font-family:var(--font-mono); font-size:15px; font-weight:700; padding:10px 0; outline:none; text-align:center; -moz-appearance:textfield; }
 .auto-in::-webkit-outer-spin-button,.auto-in::-webkit-inner-spin-button { -webkit-appearance:none; }
 .auto-in:disabled { opacity:.35; }
 .auto-x { color:var(--muted); font-size:14px; font-weight:700; font-family:var(--font-mono); }
 
 /* ── ACTION BUTTON (shared) ─────────────────── */
-.btn-action {
-  width:100%; padding:17px; border:none; border-radius:var(--rad2);
-  font-family:var(--font-mono); font-size:14px; font-weight:700; letter-spacing:2px;
-  cursor:pointer; transition:transform .12s, opacity .2s, box-shadow .2s;
-  text-transform:uppercase; position:relative; overflow:hidden;
-}
-.btn-action::before {
-  content:''; position:absolute; top:0; left:-100%; width:100%; height:100%;
-  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-  transition:left .6s;
-}
+.btn-action { width:100%; padding:17px; border:none; border-radius:var(--rad2); font-family:var(--font-mono); font-size:14px; font-weight:700; letter-spacing:2px; cursor:pointer; transition:transform .12s, opacity .2s, box-shadow .2s; text-transform:uppercase; position:relative; overflow:hidden; }
+.btn-action::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); transition:left .6s; }
 .btn-action:not(:disabled):hover::before { left:100%; }
 .btn-action:not(:disabled):active { transform:scale(0.975); }
 .btn-place   { background:linear-gradient(135deg,var(--violet),#5520C8); color:white; box-shadow:0 4px 24px rgba(140,80,255,0.42), 0 0 0 1px rgba(140,80,255,0.28); }
@@ -282,13 +219,8 @@ body::after {
 
 /* ── STATS ROW (shared) ─────────────────────── */
 .stats-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
-.stat-card {
-  background:var(--panel); border-radius:var(--rad); border:1px solid var(--border2);
-  padding:13px 10px; text-align:center; position:relative; overflow:hidden;
-}
-.stat-card::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:2px; border-radius:2px 2px 0 0;
-}
+.stat-card { background:var(--panel); border-radius:var(--rad); border:1px solid var(--border2); padding:13px 10px; text-align:center; position:relative; overflow:hidden; }
+.stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; border-radius:2px 2px 0 0; }
 .stat-card:nth-child(1)::before { background:linear-gradient(90deg,transparent,var(--green),transparent); }
 .stat-card:nth-child(2)::before { background:linear-gradient(90deg,transparent,var(--red),transparent); }
 .stat-card:nth-child(3)::before { background:linear-gradient(90deg,transparent,var(--violet),transparent); }
@@ -298,147 +230,90 @@ body::after {
 .sv-n    { color:var(--neon); }
 .stat-l  { font-size:10px; font-weight:600; color:var(--muted2); text-transform:uppercase; letter-spacing:1.5px; font-family:var(--font-mono); }
 
-/* ── DIVIDER ─────────────────────────────────── */
 .divider { width:100%; height:1px; background:var(--border2); }
 
 /* ── ROULETTE GAME AREA ─────────────────────── */
-.roul-game-wrap {
-  border-radius:var(--rad2); overflow:hidden;
-  position:relative; border:1px solid var(--border); background:var(--bg2);
-  transition: border-color 0.3s;
-}
-.roul-game-wrap::after {
-  content:''; position:absolute; inset:0; z-index:2; pointer-events:none;
-  background:repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.05) 3px, rgba(0,0,0,0.05) 4px);
-}
+.roul-game-wrap { border-radius:var(--rad2); overflow:hidden; position:relative; border:1px solid var(--border); background:var(--bg2); transition: border-color 0.3s; }
+.roul-game-wrap::after { content:''; position:absolute; inset:0; z-index:2; pointer-events:none; background:repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.05) 3px, rgba(0,0,0,0.05) 4px); }
 #roulCanvas { display:block; width:100%; position:relative; z-index:1; }
 
-/* Result badge */
-.roul-result-badge {
-  position:absolute; top:12px; right:12px; z-index:5;
-  opacity:0; transition:opacity .5s, transform .5s cubic-bezier(0.34,1.56,0.64,1);
-  transform:scale(0.6);
-}
+.roul-result-badge { position:absolute; top:12px; right:12px; z-index:5; opacity:0; transition:opacity .5s, transform .5s cubic-bezier(0.34,1.56,0.64,1); transform:scale(0.6); }
 .roul-result-badge.show { opacity:1; transform:scale(1); }
-.rrc {
-  width:56px; height:56px; border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  font-family:var(--font-mono); font-size:20px; font-weight:700; border:2px solid;
-}
+.rrc { width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:20px; font-weight:700; border:2px solid; }
 .rrc-violet { background:rgba(140,80,255,0.22); color:var(--neon); border-color:var(--violet); box-shadow:0 0 18px rgba(140,80,255,0.45); }
 .rrc-black  { background:rgba(20,20,42,0.9); color:rgba(255,255,255,0.75); border-color:rgba(255,255,255,0.18); }
-.rrc-green  { background:rgba(57,255,142,0.15); color:var(--green); border-color:var(--green); box-shadow:0 0 18px rgba(57,255,142,0.45); }
 .rrc-gold   { background:rgba(255,189,63,0.15); color:var(--gold); border-color:var(--gold); box-shadow:0 0 18px rgba(255,189,63,0.45); }
 .rrc-empty  { background:rgba(22,22,42,0.6); color:var(--muted); border-color:var(--border2); }
 
-/* ── ROULETTE HISTORY ───────────────────────── */
-.roul-history {
-  display:flex; gap:6px; overflow-x:auto; padding:10px 14px;
-  background:var(--panel); border-radius:var(--rad); border:1px solid var(--border2);
-  scrollbar-width:none; align-items:center;
-}
+.roul-history { display:flex; gap:6px; overflow-x:auto; padding:10px 14px; background:var(--panel); border-radius:var(--rad); border:1px solid var(--border2); scrollbar-width:none; align-items:center; }
 .roul-history::-webkit-scrollbar { display:none; }
-.rh-chip {
-  flex-shrink:0; font-family:var(--font-mono); font-size:12px; font-weight:700;
-  width:30px; height:30px; border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-}
+.rh-chip { flex-shrink:0; font-family:var(--font-mono); font-size:12px; font-weight:700; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
 .rh-chip.violet { background:rgba(140,80,255,0.2); color:var(--neon); border:1px solid rgba(140,80,255,0.3); }
 .rh-chip.black  { background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.6); border:1px solid rgba(255,255,255,0.12); }
-.rh-chip.green  { background:rgba(57,255,142,0.15); color:var(--green); border:1px solid rgba(57,255,142,0.25); }
 .rh-chip.gold   { background:rgba(255,189,63,0.15); color:var(--gold); border:1px solid rgba(255,189,63,0.25); }
 
-/* ── ROULETTE BET TYPES ─────────────────────── */
-.roul-bet-types {
-  display:flex; gap:6px;
-  background:var(--panel); border-radius:var(--rad2); border:1px solid var(--border2);
-  padding:10px;
-}
-.rbt {
-  flex:1; display:flex; flex-direction:column; align-items:center; gap:5px;
-  background:var(--panel2); border:1.5px solid var(--border2);
-  border-radius:12px; padding:12px 2px; cursor:pointer; transition:all .22s;
-}
+.roul-bet-types { display:flex; gap:6px; background:var(--panel); border-radius:var(--rad2); border:1px solid var(--border2); padding:10px; }
+.rbt { flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; background:var(--panel2); border:1.5px solid var(--border2); border-radius:12px; padding:12px 2px; cursor:pointer; transition:all .22s; }
 .rbt:active { transform:scale(0.95); }
 .rbt.sel-violet { border-color:var(--violet); background:rgba(140,80,255,0.12); box-shadow:0 0 20px rgba(140,80,255,0.18); }
 .rbt.sel-black  { border-color:rgba(255,255,255,0.22); background:rgba(255,255,255,0.05); }
-.rbt.sel-green  { border-color:var(--green); background:rgba(57,255,142,0.08); box-shadow:0 0 20px rgba(57,255,142,0.14); }
 .rbt.sel-gold   { border-color:var(--gold); background:rgba(255,189,63,0.08); box-shadow:0 0 20px rgba(255,189,63,0.14); }
 .rbt-dot { width:22px; height:22px; border-radius:50%; flex-shrink:0; }
 .rbt-dot.violet { background:var(--violet); box-shadow:0 0 12px rgba(140,80,255,0.7); }
 .rbt-dot.black  { background:#1E1E38; border:1.5px solid rgba(255,255,255,0.2); }
-.rbt-dot.green  { background:var(--green); box-shadow:0 0 12px rgba(57,255,142,0.7); }
 .rbt-dot.gold   { background:var(--gold); box-shadow:0 0 12px rgba(255,189,63,0.7); }
 .rbt-name { font-size:10px; font-weight:700; color:var(--muted); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0px; }
 .rbt-odds { font-size:14px; font-weight:700; color:var(--text); font-family:var(--font-mono); }
 .rbt.sel-violet .rbt-name { color:var(--neon); }
-.rbt.sel-green .rbt-name  { color:var(--green); }
 .rbt.sel-black .rbt-name  { color:rgba(255,255,255,0.65); }
 .rbt.sel-gold .rbt-name   { color:var(--gold); }
 
+/* ── MINES GAME AREA ────────────────────────── */
+.mines-wrap { background:var(--bg2); border-radius:var(--rad2); border:1px solid var(--border); padding:16px; position:relative; }
+.mines-mult-badge { text-align:center; font-family:var(--font-mono); font-size:26px; font-weight:bold; color:var(--neon2); margin-bottom:12px; transition:color 0.3s; }
+.mines-grid { display:grid; grid-template-columns:repeat(5, 1fr); gap:8px; margin-bottom:12px; }
+.mine-cell {
+  aspect-ratio:1; background:var(--panel2); border:1.5px solid var(--border2);
+  border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  font-size:22px; transition:all 0.2s; box-shadow:0 4px 6px rgba(0,0,0,0.1);
+}
+.mine-cell:active { transform:scale(0.9); }
+.mine-cell.gem { background:rgba(57,255,142,0.12); border-color:var(--green); box-shadow:inset 0 0 12px rgba(57,255,142,0.2); }
+.mine-cell.bomb { background:rgba(255,63,108,0.15); border-color:var(--red); box-shadow:inset 0 0 12px rgba(255,63,108,0.3); }
+.mine-cell.dim { opacity:0.5; cursor:default; }
+.mine-cell.disabled { cursor:default; pointer-events:none; }
+
 /* ── BOTTOM NAV ─────────────────────────────── */
 .bottom-nav {
-  position:fixed; bottom:0; left:0; right:0; z-index:200;
-  display:flex; justify-content:space-around;
-  background:rgba(8,8,15,0.97);
-  backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
-  border-top:1px solid var(--border);
-  padding:8px 0 max(12px, env(safe-area-inset-bottom));
-  max-width:100%;
+  position:fixed; bottom:0; left:0; right:0; z-index:200; display:flex; justify-content:space-around;
+  background:rgba(8,8,15,0.97); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+  border-top:1px solid var(--border); padding:8px 0 max(12px, env(safe-area-inset-bottom)); max-width:100%;
 }
-.nav-btn {
-  flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;
-  background:none; border:none; cursor:pointer; padding:6px;
-  transition:all .2s; position:relative;
-}
+.nav-btn { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; background:none; border:none; cursor:pointer; padding:6px; transition:all .2s; position:relative; }
 .nav-icon { font-size:24px; transition:all .25s; display:block; }
 .nav-label { font-size:10px; font-weight:700; color:var(--muted); font-family:var(--font-mono); letter-spacing:1px; text-transform:uppercase; transition:color .2s; }
 .nav-btn.active .nav-label { color:var(--neon); }
 .nav-btn.active .nav-icon { filter:drop-shadow(0 0 10px var(--violet)); transform:scale(1.12); }
-.nav-indicator {
-  position:absolute; top:0; left:50%; transform:translateX(-50%);
-  width:32px; height:2px; border-radius:2px;
-  background:linear-gradient(90deg, transparent, var(--violet), transparent);
-  opacity:0; transition:opacity .25s;
-}
+.nav-indicator { position:absolute; top:0; left:50%; transform:translateX(-50%); width:32px; height:2px; border-radius:2px; background:linear-gradient(90deg, transparent, var(--violet), transparent); opacity:0; transition:opacity .25s; }
 .nav-btn.active .nav-indicator { opacity:1; }
 
 /* ── TOAST ───────────────────────────────────── */
-.toast {
-  position:fixed; top:24px; left:50%;
-  transform:translateX(-50%) translateY(-120px);
-  border-radius:30px; padding:11px 22px;
-  font-family:var(--font-mono); font-size:14px; font-weight:700;
-  z-index:9999; transition:transform .4s cubic-bezier(0.34,1.56,0.64,1);
-  letter-spacing:.5px; backdrop-filter:blur(20px); border:1px solid;
-}
+.toast { position:fixed; top:24px; left:50%; transform:translateX(-50%) translateY(-120px); border-radius:30px; padding:11px 22px; font-family:var(--font-mono); font-size:14px; font-weight:700; z-index:9999; transition:transform .4s cubic-bezier(0.34,1.56,0.64,1); letter-spacing:.5px; backdrop-filter:blur(20px); border:1px solid; }
 .toast.show { transform:translateX(-50%) translateY(0); }
 .tw { color:var(--green); background:rgba(57,255,142,0.1);  border-color:rgba(57,255,142,0.25); }
 .tl { color:var(--red);   background:rgba(255,63,108,0.1);  border-color:rgba(255,63,108,0.25); }
 .ti { color:var(--neon);  background:var(--violet-dim);     border-color:var(--border); }
 
 /* ── ONLINE BETS ────────────────────────────── */
-.online-bets {
-  background:var(--panel); border-radius:var(--rad2); border:1px solid var(--border2);
-  padding:12px; margin-top:4px; margin-bottom:10px;
-}
-.ob-header {
-  font-size:10px; font-weight:700; letter-spacing:2px; color:var(--muted);
-  text-transform:uppercase; font-family:var(--font-mono); margin-bottom:10px;
-  display:flex; justify-content:space-between;
-}
+.online-bets { background:var(--panel); border-radius:var(--rad2); border:1px solid var(--border2); padding:12px; margin-top:4px; margin-bottom:10px; }
+.ob-header { font-size:10px; font-weight:700; letter-spacing:2px; color:var(--muted); text-transform:uppercase; font-family:var(--font-mono); margin-bottom:10px; display:flex; justify-content:space-between; }
 .ob-list { display:flex; flex-direction:column; gap:8px; }
-.ob-item {
-  display:flex; justify-content:space-between; align-items:center;
-  background:var(--panel2); padding:8px 12px; border-radius:8px;
-  font-family:var(--font-mono); font-size:12px; border:1px solid transparent;
-}
+.ob-item { display:flex; justify-content:space-between; align-items:center; background:var(--panel2); padding:8px 12px; border-radius:8px; font-family:var(--font-mono); font-size:12px; border:1px solid transparent; }
 .ob-user { display:flex; align-items:center; gap:8px; color:var(--text); font-weight:700; }
 .ob-avatar { width:22px; height:22px; border-radius:50%; background:var(--violet-dim); color:var(--neon); display:flex; align-items:center; justify-content:center; font-size:11px; }
 .ob-bet { color:var(--muted); display:flex; gap:4px; align-items:center; font-weight:700; }
 .ob-win { color:var(--green); font-weight:700; display:flex; gap:4px; align-items:center; }
 .ob-crash { color:var(--red); font-weight:700; display:flex; gap:4px; align-items:center; }
-
 </style>
 </head>
 <body>
@@ -462,13 +337,10 @@ body::after {
   </div>
 
   <div class="screen active" id="screen-crash">
-
     <div class="game-area" id="crashGameArea">
       <canvas id="cvs"></canvas>
-
       <video id="vidRocket" class="anim-vid" src="rocket.mp4" loop muted playsinline preload="auto"></video>
       <video id="vidCrash" class="anim-vid" src="crash.mp4" muted playsinline preload="auto"></video>
-
       <div class="countdown-wrap" id="cdWrap">
         <div class="cdown-ring">
           <svg width="88" height="88" viewBox="0 0 90 90">
@@ -485,9 +357,7 @@ body::after {
       </div>
       <div class="status-badge sb-wait" id="statusBadge">ОЖИДАНИЕ</div>
     </div>
-
     <div class="history-bar" id="histBar"><span class="h-label">История</span></div>
-
     <div class="bet-panel">
       <div class="section-label">Ставка</div>
       <div class="bet-input-wrap">
@@ -515,24 +385,21 @@ body::after {
         </div>
       </div>
     </div>
-
     <button class="btn-action btn-place" id="btnAction" onclick="handleAction()">СДЕЛАТЬ СТАВКУ</button>
-
     <div class="stats-row">
       <div class="stat-card"><div class="stat-v sv-g" id="sWins">0</div><div class="stat-l">Побед</div></div>
       <div class="stat-card"><div class="stat-v sv-r" id="sLoss">0</div><div class="stat-l">Поражений</div></div>
       <div class="stat-card"><div class="stat-v sv-n" id="sProfit">0</div><div class="stat-l">Прибыль</div></div>
     </div>
-
     <div class="online-bets">
       <div class="ob-header"><span>Онлайн ставки</span></div>
       <div class="ob-list" id="crashBotList">
         <div style="color:var(--muted);font-size:11px;text-align:center;padding:10px 0;">Ожидание ставок...</div>
       </div>
     </div>
+  </div>
 
-  </div><div class="screen" id="screen-roulette">
-
+  <div class="screen" id="screen-roulette">
     <div class="roul-game-wrap" id="roulGameArea">
       <canvas id="roulCanvas"></canvas>
       <div class="roul-result-badge" id="roulResultBadge">
@@ -540,11 +407,9 @@ body::after {
       </div>
       <div class="status-badge sb-wait" id="roulStatusBadge">СТАВКИ</div>
     </div>
-
     <div class="roul-history" id="roulHistBar">
       <span class="h-label">История</span>
     </div>
-
     <div class="roul-bet-types">
       <button class="rbt" id="rbt-violet" onclick="selectBetType('violet')">
         <div class="rbt-dot violet"></div>
@@ -556,18 +421,12 @@ body::after {
         <div class="rbt-name">Чёрный</div>
         <div class="rbt-odds">×2</div>
       </button>
-      <button class="rbt" id="rbt-green" onclick="selectBetType('green')">
-        <div class="rbt-dot green"></div>
-        <div class="rbt-name">Зелёный</div>
-        <div class="rbt-odds">×14</div>
-      </button>
       <button class="rbt" id="rbt-gold" onclick="selectBetType('gold')">
         <div class="rbt-dot gold"></div>
         <div class="rbt-name">Бонус</div>
         <div class="rbt-odds">×50</div>
       </button>
     </div>
-
     <div class="bet-panel">
       <div class="section-label">Ставка</div>
       <div class="bet-input-wrap">
@@ -584,27 +443,70 @@ body::after {
         <button class="qb" onclick="roulMax()">MAX</button>
       </div>
     </div>
-
     <button class="btn-action btn-spin" id="roulSpinBtn" onclick="spinRoulette()">КРУТИТЬ</button>
-
     <div class="stats-row">
       <div class="stat-card"><div class="stat-v sv-g" id="rsWins">0</div><div class="stat-l">Побед</div></div>
       <div class="stat-card"><div class="stat-v sv-r" id="rsLoss">0</div><div class="stat-l">Поражений</div></div>
       <div class="stat-card"><div class="stat-v sv-n" id="rsProfit">0</div><div class="stat-l">Прибыль</div></div>
     </div>
-
     <div class="online-bets">
       <div class="ob-header"><span>Онлайн ставки</span></div>
       <div class="ob-list" id="roulBotList">
         <div style="color:var(--muted);font-size:11px;text-align:center;padding:10px 0;">Ожидание ставок...</div>
       </div>
     </div>
+  </div>
 
-  </div></div><nav class="bottom-nav">
+  <div class="screen" id="screen-mines">
+    <div class="mines-wrap" id="minesGameArea">
+      <div class="mines-mult-badge" id="minesMultText">1.00×</div>
+      <div class="mines-grid" id="minesGrid">
+        </div>
+      <div class="status-badge sb-wait" id="minesStatusBadge" style="bottom: -8px">ВЫБЕРИТЕ СТАВКУ</div>
+    </div>
+    <div class="bet-panel">
+      <div class="section-label">Ставка</div>
+      <div class="bet-input-wrap">
+        <input type="number" class="bet-input" id="minesBetInput" value="10" min="1">
+        <span class="bet-coin">🪙</span>
+      </div>
+      <div class="qbets">
+        <button class="qb" onclick="minesQBet(10)" id="mqb1">10</button>
+        <button class="qb" onclick="minesQBet(50)" id="mqb2">50</button>
+        <button class="qb" onclick="minesQBet(100)" id="mqb3">100</button>
+        <button class="qb" onclick="minesHalf()" id="mqb4">½</button>
+        <button class="qb" onclick="minesDouble()" id="mqb5">×2</button>
+        <button class="qb" onclick="minesMax()" id="mqb6">MAX</button>
+      </div>
+      <div class="divider"></div>
+      <div class="auto-row">
+        <div class="section-label" style="margin-bottom:0">Количество мин</div>
+        <div class="auto-in-wrap">
+          <input type="number" class="auto-in" id="minesCountInput" value="3" min="1" max="24" style="width:100px">
+          <span class="auto-x">💣</span>
+        </div>
+      </div>
+    </div>
+    <button class="btn-action btn-place" id="minesActionBtn" onclick="handleMinesAction()">ИГРАТЬ</button>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-v sv-g" id="msWins">0</div><div class="stat-l">Побед</div></div>
+      <div class="stat-card"><div class="stat-v sv-r" id="msLoss">0</div><div class="stat-l">Поражений</div></div>
+      <div class="stat-card"><div class="stat-v sv-n" id="msProfit">0</div><div class="stat-l">Прибыль</div></div>
+    </div>
+  </div>
+
+</div>
+
+<nav class="bottom-nav">
   <button class="nav-btn active" id="nav-crash" onclick="switchScreen('crash')">
     <div class="nav-indicator"></div>
     <span class="nav-icon">💥</span>
     <span class="nav-label">Краш</span>
+  </button>
+  <button class="nav-btn" id="nav-mines" onclick="switchScreen('mines')">
+    <div class="nav-indicator"></div>
+    <span class="nav-icon">💣</span>
+    <span class="nav-label">Мины</span>
   </button>
   <button class="nav-btn" id="nav-roulette" onclick="switchScreen('roulette')">
     <div class="nav-indicator"></div>
@@ -621,16 +523,13 @@ const tgHaptic = window.Telegram?.WebApp?.HapticFeedback;
 
 function vibe(style = 'light') {
   try {
-    if (tgHaptic) {
-      tgHaptic.impactOccurred(style);
-    } else if (navigator.vibrate) {
-      navigator.vibrate(style === 'heavy' ? 15 : 5);
-    }
+    if (tgHaptic) { tgHaptic.impactOccurred(style); } 
+    else if (navigator.vibrate) { navigator.vibrate(style === 'heavy' ? 15 : 5); }
   } catch (e) {}
 }
 
 document.addEventListener('pointerdown', (e) => {
-  if (e.target.closest('button') || e.target.closest('.tgl-wrap') || e.target.closest('.rbt') || e.target.closest('.nav-btn')) {
+  if (e.target.closest('button') || e.target.closest('.tgl-wrap') || e.target.closest('.rbt') || e.target.closest('.nav-btn') || e.target.closest('.mine-cell')) {
     vibe('light');
   }
 });
@@ -645,28 +544,57 @@ const initData = tg?.initData || '';
 const playerName = tgUser ? (tgUser.first_name + (tgUser.last_name ? ' ' + tgUser.last_name : '')) : 'Вы';
 document.getElementById('username').textContent = playerName;
 
-// ═══════════════════════════════════════════════
-//  API & BOTS LOGIC
-// ═══════════════════════════════════════════════
 const API = 'https://tribe-conservation-remark-perfect.trycloudflare.com';
 const urlParams = new URLSearchParams(window.location.search);
 const chatId = parseInt(urlParams.get('chat_id') || '0');
 
-const botNames = ['Alex', 'Dmitriy', 'Killer_777', 'Olya', 'LuckyStrike', 'Casinoman', 'Vanya_99', 'Serega_VIP', 'Kira', 'Nagibator'];
-let gamesSinceBotCrash = 0;
-let targetBotGameCrash = Math.floor(Math.random() * 8) + 5; 
-let gamesSinceBotRoul = 0;
-let targetBotGameRoul = Math.floor(Math.random() * 8) + 5; 
+// ═══════════════════════════════════════════════
+//  SHARED STATE & BOTS LOGIC
+// ═══════════════════════════════════════════════
+let balance  = 0;
+let crashStats = JSON.parse(localStorage.getItem('cs')  || '{"w":0,"l":0,"p":0}');
+let roulStats  = JSON.parse(localStorage.getItem('rcs') || '{"w":0,"l":0,"p":0}');
+let minesStats = JSON.parse(localStorage.getItem('ms')  || '{"w":0,"l":0,"p":0}');
 
-let activeBotsCrash = [];
-let activeBotsRoul = [];
-let botJoinTimers = [];
+const botNames = ['Alex', 'Dmitriy', 'Killer_777', 'Olya', 'LuckyStrike', 'Casinoman', 'Vanya_99', 'Serega_VIP', 'Kira', 'Nagibator'];
+let gamesSinceBotCrash = 0, targetBotGameCrash = Math.floor(Math.random() * 8) + 5; 
+let gamesSinceBotRoul = 0, targetBotGameRoul = Math.floor(Math.random() * 8) + 5; 
+let activeBotsCrash = [], activeBotsRoul = [], botJoinTimers = [];
+
+function updateBalance() { document.getElementById('balanceEl').textContent = fmtN(balance); }
+
+function updateAllStats() {
+  document.getElementById('sWins').textContent = crashStats.w; document.getElementById('sLoss').textContent = crashStats.l;
+  document.getElementById('sProfit').textContent = (crashStats.p>=0?'+':'') + fmtN(crashStats.p);
+  document.getElementById('sProfit').className = 'stat-v ' + (crashStats.p>0?'sv-g':crashStats.p<0?'sv-r':'sv-n');
+
+  document.getElementById('rsWins').textContent = roulStats.w; document.getElementById('rsLoss').textContent = roulStats.l;
+  document.getElementById('rsProfit').textContent = (roulStats.p>=0?'+':'') + fmtN(roulStats.p);
+  document.getElementById('rsProfit').className = 'stat-v ' + (roulStats.p>0?'sv-g':roulStats.p<0?'sv-r':'sv-n');
+
+  document.getElementById('msWins').textContent = minesStats.w; document.getElementById('msLoss').textContent = minesStats.l;
+  document.getElementById('msProfit').textContent = (minesStats.p>=0?'+':'') + fmtN(minesStats.p);
+  document.getElementById('msProfit').className = 'stat-v ' + (minesStats.p>0?'sv-g':minesStats.p<0?'sv-r':'sv-n');
+}
+
+async function loadBalance() {
+  if (!initData) { balance = parseInt(localStorage.getItem('cb') || '1000'); updateBalance(); return; }
+  try {
+    const res = await fetch(API + '/balance?chat_id=' + chatId, { headers: { 'x-init-data': initData } });
+    if (!res.ok) throw new Error(); const data = await res.json();
+    balance = data.balance; localStorage.setItem('cb', balance); updateBalance();
+  } catch(e) { balance = parseInt(localStorage.getItem('cb') || '1000'); updateBalance(); }
+}
+async function syncBalance(delta) {
+  localStorage.setItem('cb', balance);
+  if (!initData) return;
+  try { await fetch(API + '/update_balance', { method: 'POST', headers: { 'x-init-data': initData, 'Content-Type': 'application/json' }, body: JSON.stringify({ delta, chat_id: chatId }) }); } catch(e) {}
+}
 
 function renderBots(gameType) {
   const list = document.getElementById(gameType === 'crash' ? 'crashBotList' : 'roulBotList');
   if (!list) return;
   list.innerHTML = '';
-  
   let totalItems = 0;
 
   if (gameType === 'crash' && hasBet) {
@@ -679,88 +607,22 @@ function renderBots(gameType) {
 
   const bots = gameType === 'crash' ? activeBotsCrash : activeBotsRoul;
   bots.forEach(b => {
-    if (gameType === 'crash') {
-      renderBotItem(list, b.name, b.bet, b.cashedOut ? b.target : null, null, b.crashed);
-    } else {
-      renderBotItem(list, b.name, b.bet, null, b.type);
-    }
+    if (gameType === 'crash') renderBotItem(list, b.name, b.bet, b.cashedOut ? b.target : null, null, b.crashed);
+    else renderBotItem(list, b.name, b.bet, null, b.type);
     totalItems++;
   });
 
-  if (totalItems === 0) {
-    list.innerHTML = '<div style="color:var(--muted);font-size:11px;text-align:center;padding:10px 0;">Пока нет ставок...</div>';
-  }
+  if (totalItems === 0) list.innerHTML = '<div style="color:var(--muted);font-size:11px;text-align:center;padding:10px 0;">Пока нет ставок...</div>';
 }
-
 function renderBotItem(list, name, bet, winMult, type, isCrashed) {
-  const item = document.createElement('div');
-  item.className = 'ob-item';
+  const item = document.createElement('div'); item.className = 'ob-item';
   if (name === playerName) item.style.border = '1px solid rgba(140,80,255,0.4)';
-
   let rightSide = `<div class="ob-bet">${fmtN(bet)} 🪙</div>`;
-  if (winMult) {
-    rightSide = `<div class="ob-win">+${fmtN(Math.floor(bet * winMult))} 🪙 <span style="font-size:10px">(${fmt(winMult)}×)</span></div>`;
-  } else if (isCrashed) {
-    rightSide = `<div class="ob-crash">КРАШ</div>`;
-  } else if (type) {
-    rightSide = `<div class="ob-bet"><div class="rbt-dot ${type}" style="width:12px;height:12px;box-shadow:none"></div> ${fmtN(bet)} 🪙</div>`;
-  }
-
-  item.innerHTML = `
-    <div class="ob-user">
-      <div class="ob-avatar">${name.charAt(0)}</div>
-      ${name}
-    </div>
-    ${rightSide}
-  `;
+  if (winMult) rightSide = `<div class="ob-win">+${fmtN(Math.floor(bet * winMult))} 🪙 <span style="font-size:10px">(${fmt(winMult)}×)</span></div>`;
+  else if (isCrashed) rightSide = `<div class="ob-crash">КРАШ</div>`;
+  else if (type) rightSide = `<div class="ob-bet"><div class="rbt-dot ${type}" style="width:12px;height:12px;box-shadow:none"></div> ${fmtN(bet)} 🪙</div>`;
+  item.innerHTML = `<div class="ob-user"><div class="ob-avatar">${name.charAt(0)}</div>${name}</div>${rightSide}`;
   list.appendChild(item);
-}
-
-async function loadBalance() {
-  if (!initData) { balance = parseInt(localStorage.getItem('cb') || '1000'); updateBalance(); return; }
-  try {
-    const res = await fetch(API + '/balance?chat_id=' + chatId, { headers: { 'x-init-data': initData } });
-    if (!res.ok) throw new Error();
-    const data = await res.json();
-    balance = data.balance; localStorage.setItem('cb', balance); updateBalance();
-  } catch(e) { balance = parseInt(localStorage.getItem('cb') || '1000'); updateBalance(); }
-}
-
-async function syncBalance(delta) {
-  localStorage.setItem('cb', balance);
-  if (!initData) return;
-  try {
-    await fetch(API + '/update_balance', {
-      method: 'POST',
-      headers: { 'x-init-data': initData, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ delta, chat_id: chatId })
-    });
-  } catch(e) {}
-}
-
-// ═══════════════════════════════════════════════
-//  SHARED STATE
-// ═══════════════════════════════════════════════
-let balance  = 0;
-let crashStats = JSON.parse(localStorage.getItem('cs')  || '{"w":0,"l":0,"p":0}');
-let roulStats  = JSON.parse(localStorage.getItem('rcs') || '{"w":0,"l":0,"p":0}');
-
-function updateBalance() {
-  document.getElementById('balanceEl').textContent = fmtN(balance);
-}
-function updateCrashStats() {
-  document.getElementById('sWins').textContent   = crashStats.w;
-  document.getElementById('sLoss').textContent   = crashStats.l;
-  const el = document.getElementById('sProfit');
-  el.textContent  = (crashStats.p>=0?'+':'') + fmtN(crashStats.p);
-  el.className    = 'stat-v ' + (crashStats.p>0?'sv-g':crashStats.p<0?'sv-r':'sv-n');
-}
-function updateRoulStats() {
-  document.getElementById('rsWins').textContent = roulStats.w;
-  document.getElementById('rsLoss').textContent = roulStats.l;
-  const el = document.getElementById('rsProfit');
-  el.textContent = (roulStats.p>=0?'+':'') + fmtN(roulStats.p);
-  el.className   = 'stat-v ' + (roulStats.p>0?'sv-g':roulStats.p<0?'sv-r':'sv-n');
 }
 
 // ═══════════════════════════════════════════════
@@ -777,80 +639,59 @@ function switchScreen(name) {
   if (name === 'crash') {
     document.getElementById('headerIcon').textContent  = '💥';
     document.getElementById('headerTitle').textContent = 'CRASH';
-  } else {
+  } else if (name === 'roulette') {
     document.getElementById('headerIcon').textContent  = '🎡';
     document.getElementById('headerTitle').textContent = 'ROULETTE';
     initRoulette();
+  } else if (name === 'mines') {
+    document.getElementById('headerIcon').textContent  = '💣';
+    document.getElementById('headerTitle').textContent = 'MINES';
+    if(minesState === 'idle' && document.getElementById('minesGrid').children.length === 0) initMinesGrid();
   }
 }
 
 // ═══════════════════════════════════════════════
 //  CRASH GAME
 // ═══════════════════════════════════════════════
-let gameState   = 'waiting';
-let betAmount   = 0;
-let hasBet      = false;
-let cashedOut   = false;
-let autoCashout = false;
-let autoAt      = 2.0;
-let crashPoint  = 1.0;
-let currentMult = 1.0;
-let points      = [];
-let startTime   = 0;
-let frameId     = null;
-let cdSecs      = 10;
-let cdInterval  = null;
-let crashHistory = JSON.parse(localStorage.getItem('ch') || '[]');
-const WAIT_SECS  = 10;
-let lastCrashVibe = 0;
+let gameState = 'waiting', betAmount = 0, hasBet = false, cashedOut = false, autoCashout = false;
+let autoAt = 2.0, crashPoint = 1.0, currentMult = 1.0, points = [], startTime = 0, frameId = null;
+let cdSecs = 10, cdInterval = null, crashHistory = JSON.parse(localStorage.getItem('ch') || '[]');
+const WAIT_SECS = 10; let lastCrashVibe = 0;
 
-const cvs = document.getElementById('cvs');
-const ctx  = cvs.getContext('2d');
-const vidRocket = document.getElementById('vidRocket'); 
-const vidCrash = document.getElementById('vidCrash');   
+const cvs = document.getElementById('cvs'); const ctx = cvs.getContext('2d');
+const vidRocket = document.getElementById('vidRocket'); const vidCrash = document.getElementById('vidCrash');
 const crashGameArea = document.getElementById('crashGameArea');
 
 function resizeCvs() { cvs.width = cvs.offsetWidth; cvs.height = cvs.offsetHeight; }
-resizeCvs();
-window.addEventListener('resize', () => { resizeCvs(); drawCvs(); });
+resizeCvs(); window.addEventListener('resize', () => { resizeCvs(); drawCvs(); });
 
 function drawCvs() {
-  const W = cvs.width, H = cvs.height;
-  ctx.clearRect(0, 0, W, H);
+  const W = cvs.width, H = cvs.height; ctx.clearRect(0, 0, W, H);
   ctx.strokeStyle = 'rgba(140,80,255,0.07)'; ctx.lineWidth = 1;
   for (let i=1;i<5;i++) { ctx.beginPath(); ctx.moveTo(0,H*i/5); ctx.lineTo(W,H*i/5); ctx.stroke(); }
   for (let i=1;i<5;i++) { ctx.beginPath(); ctx.moveTo(W*i/5,0); ctx.lineTo(W*i/5,H); ctx.stroke(); }
   if (points.length < 2) return;
-  const crashed  = gameState === 'crashed';
-  const maxX = points[points.length-1][0];
-  const maxY = Math.max(...points.map(p=>p[1]), 2);
-  const toX  = x => (x/maxX)*(W-24)+12;
-  const toY  = y => H-16 - ((y-1)/(maxY-1))*(H-40);
+  const crashed = gameState === 'crashed';
+  const maxX = points[points.length-1][0]; const maxY = Math.max(...points.map(p=>p[1]), 2);
+  const toX = x => (x/maxX)*(W-24)+12; const toY = y => H-16 - ((y-1)/(maxY-1))*(H-40);
   const lineColor = crashed ? '#FF3F6C' : '#8C50FF';
   const glowColor = crashed ? 'rgba(255,63,108,0.35)' : 'rgba(140,80,255,0.35)';
   
   const g = ctx.createLinearGradient(0,0,0,H);
   g.addColorStop(0, crashed ? 'rgba(255,63,108,0.2)' : 'rgba(140,80,255,0.2)');
   g.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.beginPath();
-  ctx.moveTo(toX(points[0][0]), toY(points[0][1]));
-  points.forEach(p => ctx.lineTo(toX(p[0]), toY(p[1])));
-  const lp = points[points.length-1];
-  ctx.lineTo(toX(lp[0]), H); ctx.lineTo(toX(points[0][0]), H); ctx.closePath();
+  ctx.beginPath(); ctx.moveTo(toX(points[0][0]), toY(points[0][1])); points.forEach(p => ctx.lineTo(toX(p[0]), toY(p[1])));
+  const lp = points[points.length-1]; ctx.lineTo(toX(lp[0]), H); ctx.lineTo(toX(points[0][0]), H); ctx.closePath();
   ctx.fillStyle = g; ctx.fill();
   
-  ctx.save(); ctx.filter = 'blur(6px)';
-  ctx.beginPath(); ctx.moveTo(toX(points[0][0]), toY(points[0][1]));
-  points.forEach(p => ctx.lineTo(toX(p[0]), toY(p[1])));
-  ctx.strokeStyle = glowColor; ctx.lineWidth = 8; ctx.stroke(); ctx.restore();
+  ctx.save(); ctx.filter = 'blur(6px)'; ctx.beginPath(); ctx.moveTo(toX(points[0][0]), toY(points[0][1]));
+  points.forEach(p => ctx.lineTo(toX(p[0]), toY(p[1]))); ctx.strokeStyle = glowColor; ctx.lineWidth = 8; ctx.stroke(); ctx.restore();
   
-  ctx.beginPath(); ctx.moveTo(toX(points[0][0]), toY(points[0][1]));
-  points.forEach(p => ctx.lineTo(toX(p[0]), toY(p[1])));
+  ctx.beginPath(); ctx.moveTo(toX(points[0][0]), toY(points[0][1])); points.forEach(p => ctx.lineTo(toX(p[0]), toY(p[1])));
   ctx.strokeStyle = lineColor; ctx.lineWidth = 3; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke();
   
   const lx = toX(lp[0]), ly = toY(lp[1]);
-  ctx.save(); ctx.filter = 'blur(8px)';
-  ctx.beginPath(); ctx.arc(lx,ly,10,0,Math.PI*2); ctx.fillStyle = lineColor; ctx.fill(); ctx.restore();
+  ctx.save(); ctx.filter = 'blur(8px)'; ctx.beginPath(); ctx.arc(lx,ly,10,0,Math.PI*2); ctx.fillStyle = lineColor; ctx.fill(); ctx.restore();
   ctx.beginPath(); ctx.arc(lx,ly,5,0,Math.PI*2); ctx.fillStyle = lineColor; ctx.fill();
   ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 2; ctx.stroke();
 }
@@ -868,101 +709,56 @@ function genCrash() {
 
 function startCountdown() {
   gameState = 'waiting'; hasBet = false; cashedOut = false; betAmount = 0;
-  
-  vidRocket.classList.remove('show');
-  vidCrash.classList.remove('show');
-  vidRocket.pause(); vidRocket.currentTime = 0;
-  vidCrash.pause(); vidCrash.currentTime = 0;
-
+  vidRocket.classList.remove('show'); vidCrash.classList.remove('show');
+  vidRocket.pause(); vidRocket.currentTime = 0; vidCrash.pause(); vidCrash.currentTime = 0;
   cdSecs = WAIT_SECS; points = []; currentMult = 1.0;
-  document.getElementById('cdWrap').classList.remove('hidden');
-  document.getElementById('multOverlay').style.opacity = '0';
-  setStatus('ОЖИДАНИЕ', 'sb-wait');
-  setQBtnsDisabled(false);
-  document.getElementById('betInput').disabled = false;
-  updateBtn(); updateArc(WAIT_SECS);
-  document.getElementById('cdSec').textContent = WAIT_SECS;
-  
-  botJoinTimers.forEach(clearTimeout);
-  botJoinTimers = [];
-  activeBotsCrash = [];
-  renderBots('crash');
+  document.getElementById('cdWrap').classList.remove('hidden'); document.getElementById('multOverlay').style.opacity = '0';
+  setStatus('ОЖИДАНИЕ', 'sb-wait'); setQBtnsDisabled(false); document.getElementById('betInput').disabled = false;
+  updateBtn(); updateArc(WAIT_SECS); document.getElementById('cdSec').textContent = WAIT_SECS;
+  botJoinTimers.forEach(clearTimeout); botJoinTimers = []; activeBotsCrash = []; renderBots('crash');
   
   gamesSinceBotCrash++;
   if (gamesSinceBotCrash >= targetBotGameCrash) {
-    gamesSinceBotCrash = 0;
-    targetBotGameCrash = Math.floor(Math.random() * 8) + 5;
+    gamesSinceBotCrash = 0; targetBotGameCrash = Math.floor(Math.random() * 8) + 5;
     const botCount = Math.floor(Math.random() * 3) + 1;
     for (let i = 0; i < botCount; i++) {
       botJoinTimers.push(setTimeout(() => {
         const name = botNames[Math.floor(Math.random()*botNames.length)];
         const bet = [10, 50, 100, 250, 500, 1000, 2000][Math.floor(Math.random()*7)];
-        activeBotsCrash.push({ name, bet, target: 1.1 + Math.random()*5, cashedOut: false, crashed: false });
-        renderBots('crash');
+        activeBotsCrash.push({ name, bet, target: 1.1 + Math.random()*5, cashedOut: false, crashed: false }); renderBots('crash');
       }, Math.random() * 8000));
     }
   }
-
   clearInterval(cdInterval);
   cdInterval = setInterval(() => {
-    cdSecs--;
-    document.getElementById('cdSec').textContent = cdSecs;
-    updateArc(cdSecs);
+    cdSecs--; document.getElementById('cdSec').textContent = cdSecs; updateArc(cdSecs);
     if (cdSecs <= 0) { clearInterval(cdInterval); launchRound(); }
   }, 1000);
 }
 
 function updateArc(cur) {
-  const pct = cur / WAIT_SECS;
-  document.getElementById('cdArc').style.strokeDashoffset = 283 - 283*pct;
+  const pct = cur / WAIT_SECS; document.getElementById('cdArc').style.strokeDashoffset = 283 - 283*pct;
   const hint = document.getElementById('cdHint');
   if (hasBet) hint.innerHTML = `Принято <span>${fmtN(betAmount)} 🪙</span>`;
   else hint.innerHTML = `СТАВКИ ОТКРЫТЫ`;
 }
 
 function launchRound() {
-  crashPoint = genCrash(); gameState = 'running';
-  startTime = performance.now(); points = [[0,1]];
-  lastCrashVibe = startTime;
-
-  vidCrash.classList.remove('show');
-  vidRocket.classList.add('show');
-  vidRocket.play().catch(e => console.log('Rocket play error:', e));
-
-  document.getElementById('cdWrap').classList.add('hidden');
-  document.getElementById('multOverlay').style.opacity = '1';
-  setStatus('В ИГРЕ', 'sb-run');
-  document.getElementById('betInput').disabled = true;
-  setQBtnsDisabled(true); updateBtn();
+  crashPoint = genCrash(); gameState = 'running'; startTime = performance.now(); points = [[0,1]]; lastCrashVibe = startTime;
+  vidCrash.classList.remove('show'); vidRocket.classList.add('show'); vidRocket.play().catch(e => {});
+  document.getElementById('cdWrap').classList.add('hidden'); document.getElementById('multOverlay').style.opacity = '1';
+  setStatus('В ИГРЕ', 'sb-run'); document.getElementById('betInput').disabled = true; setQBtnsDisabled(true); updateBtn();
   
   function loop(now) {
-    const t = (now - startTime) / 1000;
-    currentMult = Math.pow(Math.E, t * 0.15);
-    
-    if (now - lastCrashVibe > 130) {
-      vibe('light');
-      lastCrashVibe = now;
-    }
-
+    const t = (now - startTime) / 1000; currentMult = Math.pow(Math.E, t * 0.15);
+    if (now - lastCrashVibe > 130) { vibe('light'); lastCrashVibe = now; }
     if (hasBet && !cashedOut && autoCashout && currentMult >= autoAt) doCashout();
-    
     let botUpdate = false;
-    activeBotsCrash.forEach(b => {
-      if (!b.cashedOut && currentMult >= b.target) {
-        b.cashedOut = true; botUpdate = true;
-      }
-    });
+    activeBotsCrash.forEach(b => { if (!b.cashedOut && currentMult >= b.target) { b.cashedOut = true; botUpdate = true; } });
     if (botUpdate) renderBots('crash');
-
-    if (currentMult >= crashPoint) {
-      currentMult = crashPoint; points.push([t, currentMult]);
-      drawCvs(); onCrash(); return;
-    }
-    
-    points.push([t, currentMult]); drawCvs();
-    setMultDisplay(currentMult, 'c-neutral');
-    if (hasBet && !cashedOut)
-      document.getElementById('btnAction').textContent = 'ЗАБРАТЬ ' + fmtN(Math.floor(betAmount * currentMult));
+    if (currentMult >= crashPoint) { currentMult = crashPoint; points.push([t, currentMult]); drawCvs(); onCrash(); return; }
+    points.push([t, currentMult]); drawCvs(); setMultDisplay(currentMult, 'c-neutral');
+    if (hasBet && !cashedOut) document.getElementById('btnAction').textContent = 'ЗАБРАТЬ ' + fmtN(Math.floor(betAmount * currentMult));
     frameId = requestAnimationFrame(loop);
   }
   frameId = requestAnimationFrame(loop);
@@ -970,311 +766,157 @@ function launchRound() {
 
 function onCrash() {
   cancelAnimationFrame(frameId); gameState = 'crashed';
-  
-  vidRocket.classList.remove('show');
-  vidRocket.pause();
-  vidCrash.classList.add('show');
-  vidCrash.currentTime = 0;
-  vidCrash.play().catch(e => console.log('Crash play error:', e));
-
-  setStatus('КРАШ ' + fmt(crashPoint) + '×', 'sb-crash');
-  setMultDisplay(crashPoint, 'c-red');
-  vibe('heavy'); 
+  vidRocket.classList.remove('show'); vidRocket.pause(); vidCrash.classList.add('show'); vidCrash.currentTime = 0; vidCrash.play().catch(e => {});
+  setStatus('КРАШ ' + fmt(crashPoint) + '×', 'sb-crash'); setMultDisplay(crashPoint, 'c-red'); vibe('heavy'); 
   addCrashHistory(parseFloat(fmt(crashPoint)));
-  
-  if (hasBet && !cashedOut) {
-    crashStats.l++; crashStats.p -= betAmount;
-    saveCrashStats(); showToast('−' + fmtN(betAmount) + ' 🪙', 'tl');
-  }
-  
-  activeBotsCrash.forEach(b => {
-    if (!b.cashedOut) b.crashed = true;
-  });
-  renderBots('crash');
-
-  hasBet = false; updateBtn();
-  setTimeout(startCountdown, 3000);
+  if (hasBet && !cashedOut) { crashStats.l++; crashStats.p -= betAmount; saveCrashStats(); showToast('−' + fmtN(betAmount) + ' 🪙', 'tl'); }
+  activeBotsCrash.forEach(b => { if (!b.cashedOut) b.crashed = true; }); renderBots('crash');
+  hasBet = false; updateBtn(); setTimeout(startCountdown, 3000);
 }
 
 function doCashout() {
   if (!hasBet || cashedOut) return;
-  cashedOut = true;
-  vibe('heavy'); 
-  
-  // Добавляем победное свечение контейнеру
-  crashGameArea.classList.add('win-pulse');
-  setTimeout(() => crashGameArea.classList.remove('win-pulse'), 1000);
-
-  const totalWin  = Math.floor(betAmount * currentMult);
-  const netProfit = totalWin - betAmount;
-  balance += totalWin;
-  crashStats.w++; crashStats.p += netProfit;
-  saveCrashStats(totalWin);
-  showToast('+' + fmtN(netProfit) + ' забрал!', 'tw');
-  setMultDisplay(currentMult, 'c-green');
-  setStatus('ВЫВЕЛ ' + fmt(currentMult) + '×', 'sb-cashout');
-  updateBtn();
-  renderBots('crash');
+  cashedOut = true; vibe('heavy'); crashGameArea.classList.add('win-pulse'); setTimeout(() => crashGameArea.classList.remove('win-pulse'), 1000);
+  const totalWin = Math.floor(betAmount * currentMult); const netProfit = totalWin - betAmount;
+  balance += totalWin; crashStats.w++; crashStats.p += netProfit; saveCrashStats(totalWin);
+  showToast('+' + fmtN(netProfit) + ' забрал!', 'tw'); setMultDisplay(currentMult, 'c-green');
+  setStatus('ВЫВЕЛ ' + fmt(currentMult) + '×', 'sb-cashout'); updateBtn(); renderBots('crash');
 }
 
 function placeBet() {
   const v = parseInt(document.getElementById('betInput').value) || 0;
-  if (v < 1)       { showToast('Минимум 1!', 'ti'); return; }
+  if (v < 1) { showToast('Минимум 1!', 'ti'); return; }
   if (v > balance) { showToast('Недостаточно средств', 'tl'); return; }
-  betAmount = v; balance -= v; hasBet = true;
-  syncBalance(-v); updateBalance(); updateBtn(); updateArc(cdSecs);
-  setQBtnsDisabled(true); document.getElementById('betInput').disabled = true;
-  renderBots('crash');
+  betAmount = v; balance -= v; hasBet = true; syncBalance(-v); updateBalance(); updateBtn(); updateArc(cdSecs);
+  setQBtnsDisabled(true); document.getElementById('betInput').disabled = true; renderBots('crash');
 }
 function cancelBet() {
   if (!hasBet || gameState !== 'waiting') return;
-  balance += betAmount; syncBalance(betAmount);
-  betAmount = 0; hasBet = false;
-  updateBalance(); updateBtn(); updateArc(cdSecs);
-  setQBtnsDisabled(false); document.getElementById('betInput').disabled = false;
-  renderBots('crash');
+  balance += betAmount; syncBalance(betAmount); betAmount = 0; hasBet = false;
+  updateBalance(); updateBtn(); updateArc(cdSecs); setQBtnsDisabled(false); document.getElementById('betInput').disabled = false; renderBots('crash');
 }
-function handleAction() {
-  if (gameState === 'waiting') { if (!hasBet) placeBet(); else cancelBet(); }
-  else if (gameState === 'running') { if (hasBet && !cashedOut) doCashout(); }
-}
+function handleAction() { if (gameState === 'waiting') { if (!hasBet) placeBet(); else cancelBet(); } else if (gameState === 'running') { if (hasBet && !cashedOut) doCashout(); } }
 function updateBtn() {
   const btn = document.getElementById('btnAction');
   if (gameState === 'waiting') {
     if (!hasBet) { btn.className='btn-action btn-place'; btn.textContent='СДЕЛАТЬ СТАВКУ'; btn.disabled=false; }
-    else         { btn.className='btn-action btn-cancel'; btn.textContent='ОТМЕНИТЬ ('+fmtN(betAmount)+')'; btn.disabled=false; }
+    else { btn.className='btn-action btn-cancel'; btn.textContent='ОТМЕНИТЬ ('+fmtN(betAmount)+')'; btn.disabled=false; }
   } else if (gameState === 'running') {
-    if (!hasBet)      { btn.className='btn-action btn-wait'; btn.textContent='ОЖИДАЙТЕ'; btn.disabled=true; }
+    if (!hasBet) { btn.className='btn-action btn-wait'; btn.textContent='ОЖИДАЙТЕ'; btn.disabled=true; }
     else if (cashedOut){ btn.className='btn-action btn-wait'; btn.textContent='ВЫВЕДЕНО ✓'; btn.disabled=true; }
-    else              { btn.className='btn-action btn-cashout'; btn.textContent='ЗАБРАТЬ '+fmtN(Math.floor(betAmount*currentMult)); btn.disabled=false; }
+    else { btn.className='btn-action btn-cashout'; btn.textContent='ЗАБРАТЬ '+fmtN(Math.floor(betAmount*currentMult)); btn.disabled=false; }
   } else { btn.className='btn-action btn-wait'; btn.textContent='ПОДГОТОВКА...'; btn.disabled=true; }
 }
-
 function canEditBet() { return gameState === 'waiting' && !hasBet; }
-function qBet(v)   { if(canEditBet()) document.getElementById('betInput').value = Math.min(v, balance); }
-function halfBet()  { if(canEditBet()) { const c=parseInt(document.getElementById('betInput').value)||0; document.getElementById('betInput').value=Math.max(1,Math.floor(c/2)); } }
+function qBet(v) { if(canEditBet()) document.getElementById('betInput').value = Math.min(v, balance); }
+function halfBet() { if(canEditBet()) { const c=parseInt(document.getElementById('betInput').value)||0; document.getElementById('betInput').value=Math.max(1,Math.floor(c/2)); } }
 function doubleBet(){ if(canEditBet()) { const c=parseInt(document.getElementById('betInput').value)||0; document.getElementById('betInput').value=Math.min(c*2||10,balance); } }
-function maxBet()   { if(canEditBet()) document.getElementById('betInput').value=balance; }
+function maxBet() { if(canEditBet()) document.getElementById('betInput').value=balance; }
 function setQBtnsDisabled(dis) { document.querySelectorAll('#screen-crash .qb').forEach(b => b.disabled=dis); }
-function toggleAuto() {
-  autoCashout = !autoCashout;
-  document.getElementById('autoTgl').className = 'tgl' + (autoCashout?' on':'');
-  document.getElementById('autoIn').disabled = !autoCashout;
-}
-document.getElementById('autoIn').addEventListener('change', function() {
-  autoAt = Math.max(1.1, parseFloat(this.value)||2.0); this.value = autoAt.toFixed(2);
-});
-document.getElementById('betInput').addEventListener('input', function() {
-  if (this.value!=='' && parseFloat(this.value)>balance) this.value=balance;
-  if (this.value!=='' && parseFloat(this.value)<1) this.value=1;
-});
+function toggleAuto() { autoCashout = !autoCashout; document.getElementById('autoTgl').className = 'tgl' + (autoCashout?' on':''); document.getElementById('autoIn').disabled = !autoCashout; }
+document.getElementById('autoIn').addEventListener('change', function() { autoAt = Math.max(1.1, parseFloat(this.value)||2.0); this.value = autoAt.toFixed(2); });
+document.getElementById('betInput').addEventListener('input', function() { if (this.value!=='' && parseFloat(this.value)>balance) this.value=balance; if (this.value!=='' && parseFloat(this.value)<1) this.value=1; });
 
-function addCrashHistory(v) {
-  crashHistory.unshift(v); if(crashHistory.length>20) crashHistory.pop();
-  localStorage.setItem('ch', JSON.stringify(crashHistory)); renderCrashHistory();
-}
+function addCrashHistory(v) { crashHistory.unshift(v); if(crashHistory.length>20) crashHistory.pop(); localStorage.setItem('ch', JSON.stringify(crashHistory)); renderCrashHistory(); }
 function renderCrashHistory() {
-  const bar = document.getElementById('histBar');
-  bar.innerHTML = '<span class="h-label">История</span>';
-  crashHistory.forEach(v => {
-    const c=document.createElement('span');
-    c.className='hchip '+(v<1.5?'low':v<3?'mid':'high');
-    c.textContent=fmt(v)+'×'; bar.appendChild(c);
-  });
+  const bar = document.getElementById('histBar'); bar.innerHTML = '<span class="h-label">История</span>';
+  crashHistory.forEach(v => { const c=document.createElement('span'); c.className='hchip '+(v<1.5?'low':v<3?'mid':'high'); c.textContent=fmt(v)+'×'; bar.appendChild(c); });
 }
-
 function setStatus(t,cls) { const el=document.getElementById('statusBadge'); el.textContent=t; el.className='status-badge '+cls; }
 function setMultDisplay(v,cls) { const el=document.getElementById('multVal'); el.innerHTML=fmt(v)+'<span class="mult-x">×</span>'; el.className='mult-val '+cls; }
-function saveCrashStats(delta) { localStorage.setItem('cs',JSON.stringify(crashStats)); updateBalance(); updateCrashStats(); if(delta!==undefined) syncBalance(delta); }
+function saveCrashStats(delta) { localStorage.setItem('cs',JSON.stringify(crashStats)); updateBalance(); updateAllStats(); if(delta!==undefined) syncBalance(delta); }
 
 
 // ═══════════════════════════════════════════════
-//  ROULETTE GAME
+//  ROULETTE GAME (REMOVED GREEN)
 // ═══════════════════════════════════════════════
-// Добавлен 'B' (Бонус) на колесо
-const WHEEL_NUMS = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,'B',10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
+const WHEEL_NUMS = [32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,'B',10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
 const RED_SET    = new Set([1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]);
-const TOTAL_SEGS = 38;
+const TOTAL_SEGS = 37;
 const SEG_ANG    = (Math.PI * 2) / TOTAL_SEGS;
 
-let wheelAngle    = -Math.PI / 2;   
-let ballAngle     = -Math.PI / 2;
-let ballRadius    = 0;
-let isSpinning    = false;
-let roulBetType   = null;            
-let roulHistory   = JSON.parse(localStorage.getItem('rh') || '[]');
-let roulAnimFrame = null;
-let roulInited    = false;
-
-let hasBetRoul    = false;
-let lastRoulBet   = 0;
-let lastRoulType  = null;
-
+let wheelAngle = -Math.PI / 2, ballAngle = -Math.PI / 2, ballRadius = 0, isSpinning = false;
+let roulBetType = null, roulHistory = JSON.parse(localStorage.getItem('rh') || '[]');
+let roulAnimFrame = null, roulInited = false;
+let hasBetRoul = false, lastRoulBet = 0, lastRoulType = null;
 const roulGameArea = document.getElementById('roulGameArea');
+const roulCanvas = document.getElementById('roulCanvas'); const rctx = roulCanvas.getContext('2d');
 
-function getNumType(n) {
-  if (n === 'B')      return 'gold';
-  if (n === 0)        return 'green';
-  if (RED_SET.has(n)) return 'violet';
-  return 'black';
-}
+function getNumType(n) { if (n === 'B') return 'gold'; if (RED_SET.has(n)) return 'violet'; return 'black'; }
 
-const roulCanvas = document.getElementById('roulCanvas');
-const rctx       = roulCanvas.getContext('2d');
-
-function initRoulette() {
-  if (!roulInited) {
-    resizeRoulCanvas();
-    roulInited = true;
-    renderBots('roulette');
-  } else {
-    drawRoulette();
-  }
-}
-
+function initRoulette() { if (!roulInited) { resizeRoulCanvas(); roulInited = true; renderBots('roulette'); } else { drawRoulette(); } }
 function resizeRoulCanvas() {
-  const parent = roulCanvas.parentElement;
-  const size   = parent.offsetWidth;
-  roulCanvas.style.height = Math.min(size, 300) + 'px';
-  roulCanvas.width  = size;
-  roulCanvas.height = Math.min(size, 300);
-  drawRoulette();
+  const size = roulCanvas.parentElement.offsetWidth;
+  roulCanvas.style.height = Math.min(size, 300) + 'px'; roulCanvas.width = size; roulCanvas.height = Math.min(size, 300); drawRoulette();
 }
 window.addEventListener('resize', () => { if(roulInited) resizeRoulCanvas(); });
 
 function drawRoulette() {
-  const W  = roulCanvas.width, H = roulCanvas.height;
-  const cx = W/2, cy = H/2;
-  const R  = Math.min(W, H)/2 - 10;
-  const innerR = R * 0.26;
-
+  const W = roulCanvas.width, H = roulCanvas.height, cx = W/2, cy = H/2, R = Math.min(W, H)/2 - 10, innerR = R * 0.26;
   rctx.clearRect(0, 0, W, H);
 
   rctx.beginPath(); rctx.arc(cx, cy, R+6, 0, Math.PI*2);
-  const outerRing = rctx.createLinearGradient(cx-R, cy-R, cx+R, cy+R);
-  outerRing.addColorStop(0, '#1A1035');
-  outerRing.addColorStop(1, '#0D0820');
-  rctx.fillStyle = outerRing; rctx.fill();
+  const outerRing = rctx.createLinearGradient(cx-R, cy-R, cx+R, cy+R); outerRing.addColorStop(0, '#1A1035'); outerRing.addColorStop(1, '#0D0820'); rctx.fillStyle = outerRing; rctx.fill();
 
-  rctx.save();
-  rctx.filter = 'blur(18px)';
-  rctx.beginPath(); rctx.arc(cx, cy, R*0.8, 0, Math.PI*2);
-  rctx.fillStyle = 'rgba(140,80,255,0.12)'; rctx.fill();
-  rctx.restore();
+  rctx.save(); rctx.filter = 'blur(18px)'; rctx.beginPath(); rctx.arc(cx, cy, R*0.8, 0, Math.PI*2); rctx.fillStyle = 'rgba(140,80,255,0.12)'; rctx.fill(); rctx.restore();
 
   for (let i = 0; i < TOTAL_SEGS; i++) {
-    const num   = WHEEL_NUMS[i];
-    const type  = getNumType(num);
-    const startA = wheelAngle + i * SEG_ANG;
-    const endA   = startA + SEG_ANG;
+    const num = WHEEL_NUMS[i]; const type = getNumType(num);
+    const startA = wheelAngle + i * SEG_ANG; const endA = startA + SEG_ANG;
+    rctx.beginPath(); rctx.moveTo(cx, cy); rctx.arc(cx, cy, R, startA, endA); rctx.closePath();
+    let fill = (type === 'gold') ? 'rgba(255,189,63,0.92)' : (type === 'violet') ? 'rgba(120,60,220,0.88)' : 'rgba(14,14,32,0.95)';
+    rctx.fillStyle = fill; rctx.fill(); rctx.strokeStyle = 'rgba(0,0,0,0.55)'; rctx.lineWidth = 1; rctx.stroke();
 
-    rctx.beginPath();
-    rctx.moveTo(cx, cy);
-    rctx.arc(cx, cy, R, startA, endA);
-    rctx.closePath();
-
-    let fill;
-    if      (type === 'gold')   fill = 'rgba(255,189,63,0.92)';
-    else if (type === 'green')  fill = 'rgba(32,200,100,0.92)';
-    else if (type === 'violet') fill = 'rgba(120,60,220,0.88)';
-    else                        fill = 'rgba(14,14,32,0.95)';
-
-    rctx.fillStyle   = fill;
-    rctx.fill();
-    rctx.strokeStyle = 'rgba(0,0,0,0.55)';
-    rctx.lineWidth   = 1;
-    rctx.stroke();
-
-    const midA = startA + SEG_ANG/2;
-    const tx   = cx + R * 0.72 * Math.cos(midA);
-    const ty   = cy + R * 0.72 * Math.sin(midA);
-    rctx.save();
-    rctx.translate(tx, ty);
-    rctx.rotate(midA + Math.PI/2);
+    const midA = startA + SEG_ANG/2, tx = cx + R * 0.72 * Math.cos(midA), ty = cy + R * 0.72 * Math.sin(midA);
+    rctx.save(); rctx.translate(tx, ty); rctx.rotate(midA + Math.PI/2);
     rctx.fillStyle = (type === 'black' || type === 'gold') ? 'rgba(255,255,255,0.85)' : 'white';
-    rctx.font      = 'bold 8px "Space Mono", monospace';
-    rctx.textAlign = 'center';
-    rctx.textBaseline = 'middle';
-    rctx.fillText(num, 0, 0);
-    rctx.restore();
+    rctx.font = 'bold 8px "Space Mono", monospace'; rctx.textAlign = 'center'; rctx.textBaseline = 'middle'; rctx.fillText(num, 0, 0); rctx.restore();
   }
 
-  const hubGrad = rctx.createRadialGradient(cx, cy-innerR*0.3, 0, cx, cy, innerR);
-  hubGrad.addColorStop(0, '#2A1855');
-  hubGrad.addColorStop(1, '#0D0820');
-  rctx.beginPath(); rctx.arc(cx, cy, innerR, 0, Math.PI*2);
-  rctx.fillStyle = hubGrad; rctx.fill();
-  rctx.beginPath(); rctx.arc(cx, cy, innerR, 0, Math.PI*2);
-  rctx.strokeStyle = 'rgba(140,80,255,0.4)'; rctx.lineWidth = 2; rctx.stroke();
-  rctx.save(); rctx.filter = 'blur(8px)';
-  rctx.beginPath(); rctx.arc(cx, cy, innerR*0.7, 0, Math.PI*2);
-  rctx.fillStyle = 'rgba(140,80,255,0.25)'; rctx.fill(); rctx.restore();
-  rctx.beginPath(); rctx.arc(cx, cy, 4, 0, Math.PI*2);
-  rctx.fillStyle = 'rgba(180,130,255,0.9)'; rctx.fill();
+  const hubGrad = rctx.createRadialGradient(cx, cy-innerR*0.3, 0, cx, cy, innerR); hubGrad.addColorStop(0, '#2A1855'); hubGrad.addColorStop(1, '#0D0820');
+  rctx.beginPath(); rctx.arc(cx, cy, innerR, 0, Math.PI*2); rctx.fillStyle = hubGrad; rctx.fill();
+  rctx.beginPath(); rctx.arc(cx, cy, innerR, 0, Math.PI*2); rctx.strokeStyle = 'rgba(140,80,255,0.4)'; rctx.lineWidth = 2; rctx.stroke();
+  rctx.save(); rctx.filter = 'blur(8px)'; rctx.beginPath(); rctx.arc(cx, cy, innerR*0.7, 0, Math.PI*2); rctx.fillStyle = 'rgba(140,80,255,0.25)'; rctx.fill(); rctx.restore();
+  rctx.beginPath(); rctx.arc(cx, cy, 4, 0, Math.PI*2); rctx.fillStyle = 'rgba(180,130,255,0.9)'; rctx.fill();
 
   if (ballRadius > 0) {
-    const bx = cx + ballRadius * Math.cos(ballAngle);
-    const by = cy + ballRadius * Math.sin(ballAngle);
-    rctx.save(); rctx.filter = 'blur(6px)';
-    rctx.beginPath(); rctx.arc(bx, by, 9, 0, Math.PI*2);
-    rctx.fillStyle = 'rgba(255,255,255,0.55)'; rctx.fill(); rctx.restore();
-    const ballGrad = rctx.createRadialGradient(bx-1.5, by-1.5, 0, bx, by, 5.5);
-    ballGrad.addColorStop(0, '#FFFFFF');
-    ballGrad.addColorStop(0.6, '#DDDDEE');
-    ballGrad.addColorStop(1, '#AAAACC');
-    rctx.beginPath(); rctx.arc(bx, by, 5.5, 0, Math.PI*2);
-    rctx.fillStyle = ballGrad; rctx.fill();
-    rctx.strokeStyle = 'rgba(0,0,0,0.35)'; rctx.lineWidth = 1; rctx.stroke();
+    const bx = cx + ballRadius * Math.cos(ballAngle), by = cy + ballRadius * Math.sin(ballAngle);
+    rctx.save(); rctx.filter = 'blur(6px)'; rctx.beginPath(); rctx.arc(bx, by, 9, 0, Math.PI*2); rctx.fillStyle = 'rgba(255,255,255,0.55)'; rctx.fill(); rctx.restore();
+    const ballGrad = rctx.createRadialGradient(bx-1.5, by-1.5, 0, bx, by, 5.5); ballGrad.addColorStop(0, '#FFFFFF'); ballGrad.addColorStop(0.6, '#DDDDEE'); ballGrad.addColorStop(1, '#AAAACC');
+    rctx.beginPath(); rctx.arc(bx, by, 5.5, 0, Math.PI*2); rctx.fillStyle = ballGrad; rctx.fill(); rctx.strokeStyle = 'rgba(0,0,0,0.35)'; rctx.lineWidth = 1; rctx.stroke();
   }
 
   const pY = cy - R - 2;
-  rctx.save();
-  rctx.filter = 'blur(6px)';
-  rctx.beginPath(); rctx.moveTo(cx, pY); rctx.lineTo(cx-8, pY-16); rctx.lineTo(cx+8, pY-16); rctx.closePath();
-  rctx.fillStyle = 'rgba(255,189,63,0.8)'; rctx.fill();
-  rctx.restore();
-  rctx.beginPath(); rctx.moveTo(cx, pY); rctx.lineTo(cx-6, pY-14); rctx.lineTo(cx+6, pY-14); rctx.closePath();
-  rctx.fillStyle = '#FFBD3F'; rctx.fill();
+  rctx.save(); rctx.filter = 'blur(6px)'; rctx.beginPath(); rctx.moveTo(cx, pY); rctx.lineTo(cx-8, pY-16); rctx.lineTo(cx+8, pY-16); rctx.closePath(); rctx.fillStyle = 'rgba(255,189,63,0.8)'; rctx.fill(); rctx.restore();
+  rctx.beginPath(); rctx.moveTo(cx, pY); rctx.lineTo(cx-6, pY-14); rctx.lineTo(cx+6, pY-14); rctx.closePath(); rctx.fillStyle = '#FFBD3F'; rctx.fill();
 }
-
 
 function selectBetType(type) {
   roulBetType = type;
-  ['violet','black','green','gold'].forEach(t => {
-    document.getElementById('rbt-'+t).className = 'rbt' + (t===type ? ' sel-'+t : '');
-  });
+  ['violet','black','gold'].forEach(t => { document.getElementById('rbt-'+t).className = 'rbt' + (t===type ? ' sel-'+t : ''); });
 }
 
-function roulQBet(v)   { document.getElementById('roulBetInput').value = Math.min(v, balance); }
-function roulHalf()    { const c=parseInt(document.getElementById('roulBetInput').value)||0; document.getElementById('roulBetInput').value=Math.max(1,Math.floor(c/2)); }
-function roulDouble()  { const c=parseInt(document.getElementById('roulBetInput').value)||0; document.getElementById('roulBetInput').value=Math.min(c*2||10,balance); }
-function roulMax()     { document.getElementById('roulBetInput').value=balance; }
-
-document.getElementById('roulBetInput').addEventListener('input', function() {
-  if (this.value!==''&&parseFloat(this.value)>balance) this.value=balance;
-  if (this.value!==''&&parseFloat(this.value)<1) this.value=1;
-});
+function roulQBet(v) { document.getElementById('roulBetInput').value = Math.min(v, balance); }
+function roulHalf()  { const c=parseInt(document.getElementById('roulBetInput').value)||0; document.getElementById('roulBetInput').value=Math.max(1,Math.floor(c/2)); }
+function roulDouble(){ const c=parseInt(document.getElementById('roulBetInput').value)||0; document.getElementById('roulBetInput').value=Math.min(c*2||10,balance); }
+function roulMax()   { document.getElementById('roulBetInput').value=balance; }
+document.getElementById('roulBetInput').addEventListener('input', function() { if (this.value!==''&&parseFloat(this.value)>balance) this.value=balance; if (this.value!==''&&parseFloat(this.value)<1) this.value=1; });
 
 function spinRoulette() {
   if (isSpinning) return;
   const bet = parseInt(document.getElementById('roulBetInput').value) || 0;
   if (!roulBetType) { showToast('Выберите цвет!', 'ti'); return; }
-  if (bet < 1)      { showToast('Минимум 1!', 'ti'); return; }
+  if (bet < 1) { showToast('Минимум 1!', 'ti'); return; }
   if (bet > balance){ showToast('Недостаточно средств', 'tl'); return; }
 
   balance -= bet; syncBalance(-bet); updateBalance();
-  isSpinning = true;
-  hasBetRoul = true;
-  lastRoulBet = bet;
-  lastRoulType = roulBetType;
+  isSpinning = true; hasBetRoul = true; lastRoulBet = bet; lastRoulType = roulBetType;
 
-  activeBotsRoul = [];
-  gamesSinceBotRoul++;
+  activeBotsRoul = []; gamesSinceBotRoul++;
   if (gamesSinceBotRoul >= targetBotGameRoul) {
-    gamesSinceBotRoul = 0;
-    targetBotGameRoul = Math.floor(Math.random() * 8) + 5;
+    gamesSinceBotRoul = 0; targetBotGameRoul = Math.floor(Math.random() * 8) + 5;
     const botCount = Math.floor(Math.random() * 3) + 1;
-    const types = ['violet', 'black', 'green', 'gold', 'violet', 'black']; // Слегка разбавляем шансы для ботов
+    const types = ['violet', 'black', 'gold', 'violet', 'black']; 
     for (let i=0; i<botCount; i++) {
       const name = botNames[Math.floor(Math.random()*botNames.length)];
       const b = [10, 50, 100, 250, 500, 1000][Math.floor(Math.random()*6)];
@@ -1283,166 +925,244 @@ function spinRoulette() {
   }
   renderBots('roulette');
 
-  document.getElementById('roulSpinBtn').disabled = true;
-  document.getElementById('roulSpinBtn').textContent = 'КРУТИТСЯ...';
+  document.getElementById('roulSpinBtn').disabled = true; document.getElementById('roulSpinBtn').textContent = 'КРУТИТСЯ...';
   document.getElementById('roulResultBadge').classList.remove('show');
-  document.getElementById('roulStatusBadge').textContent = 'В ИГРЕ';
-  document.getElementById('roulStatusBadge').className   = 'status-badge sb-spin';
+  document.getElementById('roulStatusBadge').textContent = 'В ИГРЕ'; document.getElementById('roulStatusBadge').className = 'status-badge sb-spin';
 
   const resultIdx = Math.floor(Math.random() * TOTAL_SEGS);   
-  const resultNum = WHEEL_NUMS[resultIdx];
-  const resultType= getNumType(resultNum);
+  const resultNum = WHEEL_NUMS[resultIdx]; const resultType= getNumType(resultNum);
 
-  const pointerAngle  = -Math.PI / 2;
-  const targetNorm    = pointerAngle - resultIdx * SEG_ANG - SEG_ANG / 2;
-  
-  let offset = targetNorm - (wheelAngle % (Math.PI * 2));
-  if (offset > 0) offset -= Math.PI * 2;            
-  const extraSpins = (5 + Math.floor(Math.random() * 3)) * Math.PI * 2;
-  const spinAmount = offset - extraSpins;            
+  const pointerAngle = -Math.PI / 2; const targetNorm = pointerAngle - resultIdx * SEG_ANG - SEG_ANG / 2;
+  let offset = targetNorm - (wheelAngle % (Math.PI * 2)); if (offset > 0) offset -= Math.PI * 2;            
+  const extraSpins = (5 + Math.floor(Math.random() * 3)) * Math.PI * 2; const spinAmount = offset - extraSpins;            
 
-  const spinStart  = wheelAngle;
-  const spinEnd    = wheelAngle + spinAmount;
-  const duration   = 5500 + Math.random() * 2000;  
-  const startTime  = performance.now();
-
-  const spinStartBall = pointerAngle;
-  const ballSpinAmount = (8 + Math.floor(Math.random() * 4)) * Math.PI * 2;
-
-  const W  = roulCanvas.width, H = roulCanvas.height;
-  const R  = Math.min(W, H)/2 - 10;
-  ballRadius = R * 1.04;
-  ballAngle  = pointerAngle;
-
-  let lastSegmentIndex = -1;
+  const spinStart = wheelAngle, spinEnd = wheelAngle + spinAmount, duration = 5500 + Math.random() * 2000, startTime = performance.now();
+  const spinStartBall = pointerAngle, ballSpinAmount = (8 + Math.floor(Math.random() * 4)) * Math.PI * 2;
+  const W = roulCanvas.width, H = roulCanvas.height, R = Math.min(W, H)/2 - 10;
+  ballRadius = R * 1.04; ballAngle = pointerAngle; let lastSegmentIndex = -1;
 
   function animLoop(now) {
-    const elapsed  = now - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    const eased    = easeOutQuart(progress);
-
+    const elapsed = now - startTime, progress = Math.min(elapsed / duration, 1), eased = easeOutQuart(progress);
     wheelAngle = spinStart + spinAmount * eased;
-
     const currentSegmentIndex = Math.floor(Math.abs(wheelAngle / SEG_ANG));
-    if (currentSegmentIndex !== lastSegmentIndex) {
-      vibe('light');
-      lastSegmentIndex = currentSegmentIndex;
-    }
-
-    const ballEased = easeOutCubic(progress);
-    ballAngle = spinStartBall + ballSpinAmount * ballEased;
-
-    if (progress > 0.65) {
-      const drop = (progress - 0.65) / 0.35;
-      ballRadius = R * (1.04 - 0.16 * easeOutCubic(drop));
-    } else {
-      ballRadius = R * 1.04;
-    }
-
+    if (currentSegmentIndex !== lastSegmentIndex) { vibe('light'); lastSegmentIndex = currentSegmentIndex; }
+    const ballEased = easeOutCubic(progress); ballAngle = spinStartBall + ballSpinAmount * ballEased;
+    if (progress > 0.65) { const drop = (progress - 0.65) / 0.35; ballRadius = R * (1.04 - 0.16 * easeOutCubic(drop)); } else { ballRadius = R * 1.04; }
     drawRoulette();
-
-    if (progress < 1) {
-      roulAnimFrame = requestAnimationFrame(animLoop);
-    } else {
-      wheelAngle = spinEnd;
-      ballAngle  = pointerAngle;  
-      ballRadius = R * 0.88;
-      drawRoulette();
-      onRouletteResult(resultNum, resultType, bet);
-    }
+    if (progress < 1) { roulAnimFrame = requestAnimationFrame(animLoop); } else { wheelAngle = spinEnd; ballAngle = pointerAngle; ballRadius = R * 0.88; drawRoulette(); onRouletteResult(resultNum, resultType, bet); }
   }
   roulAnimFrame = requestAnimationFrame(animLoop);
 }
 
-function easeOutQuart(t) { return 1 - Math.pow(1-t, 4); }
-function easeOutCubic(t) { return 1 - Math.pow(1-t, 3); }
+function easeOutQuart(t) { return 1 - Math.pow(1-t, 4); } function easeOutCubic(t) { return 1 - Math.pow(1-t, 3); }
 
 function onRouletteResult(num, type, bet) {
-  isSpinning = false;
-  vibe('heavy');
+  isSpinning = false; vibe('heavy');
+  roulHistory.unshift({ num, type }); if (roulHistory.length > 18) roulHistory.pop();
+  localStorage.setItem('rh', JSON.stringify(roulHistory)); renderRouletteHistory();
 
-  roulHistory.unshift({ num, type });
-  if (roulHistory.length > 18) roulHistory.pop();
-  localStorage.setItem('rh', JSON.stringify(roulHistory));
-  renderRouletteHistory();
-
-  const badge  = document.getElementById('roulResultBadge');
-  const circle = document.getElementById('roulResultCircle');
-  circle.textContent = num;
-  circle.className   = 'rrc rrc-' + type;
-  badge.classList.add('show');
-
+  const badge = document.getElementById('roulResultBadge'), circle = document.getElementById('roulResultCircle');
+  circle.textContent = num; circle.className = 'rrc rrc-' + type; badge.classList.add('show');
   document.getElementById('roulStatusBadge').textContent = num + ' • ' + typeName(type);
-  document.getElementById('roulStatusBadge').className   = 'status-badge sb-' + (type==='green'?'cashout':type==='gold'?'cashout':type==='violet'?'run':'wait');
+  document.getElementById('roulStatusBadge').className = 'status-badge sb-' + (type==='gold'?'cashout':type==='violet'?'run':'wait');
 
   let won = roulBetType === type;
   if (won) {
-    // Включаем пульсацию свечения при победе
-    roulGameArea.classList.add('win-pulse');
-    setTimeout(() => roulGameArea.classList.remove('win-pulse'), 1000);
+    roulGameArea.classList.add('win-pulse'); setTimeout(() => roulGameArea.classList.remove('win-pulse'), 1000);
+    const multiplier = type === 'gold' ? 50 : 2; const payout = bet * multiplier; const profit = payout - bet;
+    balance += payout; syncBalance(payout); roulStats.w++; roulStats.p += profit; showToast('+' + fmtN(profit) + ' выиграл!', 'tw');
+  } else { roulStats.l++; roulStats.p -= bet; showToast('−' + fmtN(bet) + ' 🪙', 'tl'); }
 
-    const multiplier = type === 'gold' ? 50 : type === 'green' ? 14 : 2;
-    const payout     = bet * multiplier;
-    const profit     = payout - bet;
-    balance  += payout;
-    syncBalance(payout);
-    roulStats.w++;
-    roulStats.p += profit;
-    showToast('+' + fmtN(profit) + ' выиграл!', 'tw');
-  } else {
-    roulStats.l++;
-    roulStats.p -= bet;
-    showToast('−' + fmtN(bet) + ' 🪙', 'tl');
-  }
-
-  localStorage.setItem('rcs', JSON.stringify(roulStats));
-  updateBalance(); updateRoulStats();
+  localStorage.setItem('rcs', JSON.stringify(roulStats)); updateBalance(); updateAllStats();
 
   setTimeout(() => {
-    document.getElementById('roulSpinBtn').disabled = false;
-    document.getElementById('roulSpinBtn').textContent = 'КРУТИТЬ';
-    document.getElementById('roulStatusBadge').textContent = 'СТАВКИ';
-    document.getElementById('roulStatusBadge').className   = 'status-badge sb-wait';
-    hasBetRoul = false;
-    renderBots('roulette');
+    document.getElementById('roulSpinBtn').disabled = false; document.getElementById('roulSpinBtn').textContent = 'КРУТИТЬ';
+    document.getElementById('roulStatusBadge').textContent = 'СТАВКИ'; document.getElementById('roulStatusBadge').className = 'status-badge sb-wait';
+    hasBetRoul = false; renderBots('roulette');
   }, 3500);
 }
-
-function typeName(t) { return t==='violet'?'ФИОЛЕТ':t==='green'?'ЗЕЛЁНЫЙ':t==='gold'?'БОНУС':'ЧЁРНЫЙ'; }
-
+function typeName(t) { return t==='violet'?'ФИОЛЕТ':t==='gold'?'БОНУС':'ЧЁРНЫЙ'; }
 function renderRouletteHistory() {
-  const bar = document.getElementById('roulHistBar');
-  bar.innerHTML = '<span class="h-label">История</span>';
-  roulHistory.forEach(h => {
-    const chip = document.createElement('span');
-    chip.className   = 'rh-chip ' + h.type;
-    chip.textContent = h.num;
-    bar.appendChild(chip);
-  });
+  const bar = document.getElementById('roulHistBar'); bar.innerHTML = '<span class="h-label">История</span>';
+  roulHistory.forEach(h => { const chip = document.createElement('span'); chip.className = 'rh-chip ' + h.type; chip.textContent = h.num; bar.appendChild(chip); });
 }
 
-// ═══════════════════════════════════════════════
-//  SHARED UTILS
-// ═══════════════════════════════════════════════
-function fmt(n)  { return parseFloat(n).toFixed(2); }
-function fmtN(n) { return Math.round(n).toLocaleString('ru'); }
 
-let tTimer;
-function showToast(msg, cls) {
-  clearTimeout(tTimer);
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.className = 'toast ' + cls + ' show';
-  tTimer = setTimeout(() => t.classList.remove('show'), 2200);
+// ═══════════════════════════════════════════════
+//  MINES GAME
+// ═══════════════════════════════════════════════
+let minesState = 'idle'; // idle, playing
+let mBetAmount = 0, mCount = 3, mSafeRevealed = 0;
+let mMinePositions = [], mRevealed = [];
+let currentMinesMult = 1.0;
+
+function initMinesGrid() {
+  const grid = document.getElementById('minesGrid');
+  grid.innerHTML = '';
+  for(let i=0; i<25; i++) {
+    let cell = document.createElement('div');
+    cell.className = 'mine-cell';
+    cell.id = 'mcell-' + i;
+    cell.onclick = () => handleMineClick(i);
+    grid.appendChild(cell);
+  }
 }
+
+function updateMinesMultText() {
+  const el = document.getElementById('minesMultText');
+  el.textContent = fmt(currentMinesMult) + '×';
+  el.style.color = mSafeRevealed > 0 ? 'var(--green)' : 'var(--neon2)';
+}
+
+function calcMinesMult(hits, totalMines) {
+  if (hits === 0) return 1.00;
+  let prob = 1.0;
+  for (let i = 0; i < hits; i++) { prob *= (25 - totalMines - i) / (25 - i); }
+  return 0.97 / prob; // 3% house edge
+}
+
+function startMines() {
+  const bet = parseInt(document.getElementById('minesBetInput').value) || 0;
+  const count = parseInt(document.getElementById('minesCountInput').value) || 3;
+  if(bet < 1) { showToast('Минимум 1!', 'ti'); return; }
+  if(bet > balance) { showToast('Недостаточно средств', 'tl'); return; }
+  if(count < 1 || count > 24) { showToast('От 1 до 24 мин', 'ti'); return; }
+
+  balance -= bet; syncBalance(-bet); updateBalance();
+  mBetAmount = bet; mCount = count; mSafeRevealed = 0;
+  currentMinesMult = 1.0; minesState = 'playing'; mRevealed = Array(25).fill(false);
+  
+  // Раскладываем мины
+  mMinePositions = Array(25).fill(false);
+  let placed = 0;
+  while(placed < mCount) {
+    let r = Math.floor(Math.random() * 25);
+    if(!mMinePositions[r]) { mMinePositions[r] = true; placed++; }
+  }
+
+  // Обновляем UI
+  document.querySelectorAll('.mine-cell').forEach(c => { c.className = 'mine-cell'; c.innerHTML = ''; });
+  updateMinesMultText();
+  document.getElementById('minesStatusBadge').textContent = 'ИГРАЕТ (' + count + ' мин)';
+  document.getElementById('minesStatusBadge').className = 'status-badge sb-run';
+  
+  document.getElementById('minesBetInput').disabled = true;
+  document.getElementById('minesCountInput').disabled = true;
+  document.querySelectorAll('#screen-mines .qb').forEach(b => b.disabled = true);
+  
+  const btn = document.getElementById('minesActionBtn');
+  btn.className = 'btn-action btn-wait'; btn.textContent = 'ОТКРОЙТЕ ЯЧЕЙКУ'; btn.disabled = true;
+}
+
+function handleMineClick(i) {
+  if (minesState !== 'playing' || mRevealed[i]) return;
+  mRevealed[i] = true;
+  const cell = document.getElementById('mcell-' + i);
+
+  if (mMinePositions[i]) {
+    // Взрыв (проигрыш)
+    vibe('heavy');
+    cell.className = 'mine-cell bomb'; cell.innerHTML = '💣';
+    minesState = 'idle';
+    revealAllMines(false);
+    minesStats.l++; minesStats.p -= mBetAmount; saveMinesStats();
+    showToast('−' + fmtN(mBetAmount) + ' 🪙', 'tl');
+    resetMinesUI();
+  } else {
+    // Безопасная (победа этапа)
+    vibe('light');
+    cell.className = 'mine-cell gem'; cell.innerHTML = '💎';
+    mSafeRevealed++;
+    currentMinesMult = calcMinesMult(mSafeRevealed, mCount);
+    updateMinesMultText();
+    
+    // Если открыли все возможные безопасные
+    if (mSafeRevealed === (25 - mCount)) {
+      cashoutMines();
+    } else {
+      const btn = document.getElementById('minesActionBtn');
+      btn.className = 'btn-action btn-cashout';
+      btn.textContent = 'ЗАБРАТЬ ' + fmtN(Math.floor(mBetAmount * currentMinesMult));
+      btn.disabled = false;
+    }
+  }
+}
+
+function cashoutMines() {
+  if (minesState !== 'playing' || mSafeRevealed === 0) return;
+  vibe('heavy');
+  minesState = 'idle';
+  
+  const totalWin = Math.floor(mBetAmount * currentMinesMult);
+  const profit = totalWin - mBetAmount;
+  balance += totalWin; syncBalance(totalWin);
+  minesStats.w++; minesStats.p += profit; saveMinesStats();
+  
+  document.getElementById('minesGameArea').classList.add('win-pulse');
+  setTimeout(() => document.getElementById('minesGameArea').classList.remove('win-pulse'), 1000);
+  
+  showToast('+' + fmtN(profit) + ' забрал!', 'tw');
+  revealAllMines(true);
+  resetMinesUI(totalWin);
+}
+
+function revealAllMines(won) {
+  for(let i=0; i<25; i++) {
+    const c = document.getElementById('mcell-' + i);
+    c.classList.add('disabled');
+    if (!mRevealed[i]) {
+      if (mMinePositions[i]) {
+        c.innerHTML = '💣'; c.className = 'mine-cell dim';
+      } else {
+        c.innerHTML = '💎'; c.className = 'mine-cell dim';
+      }
+    }
+  }
+  document.getElementById('minesStatusBadge').textContent = won ? 'ВЫВЕЛ ' + fmt(currentMinesMult) + '×' : 'ВЗРЫВ';
+  document.getElementById('minesStatusBadge').className = 'status-badge ' + (won ? 'sb-cashout' : 'sb-crash');
+}
+
+function resetMinesUI(wonAmount) {
+  document.getElementById('minesBetInput').disabled = false;
+  document.getElementById('minesCountInput').disabled = false;
+  document.querySelectorAll('#screen-mines .qb').forEach(b => b.disabled = false);
+  
+  const btn = document.getElementById('minesActionBtn');
+  btn.className = 'btn-action btn-place'; 
+  btn.textContent = 'ИГРАТЬ СНОВА'; 
+  btn.disabled = false;
+  updateBalance(); updateAllStats();
+}
+
+function handleMinesAction() {
+  if (minesState === 'idle') startMines();
+  else if (minesState === 'playing') cashoutMines();
+}
+
+function saveMinesStats() {
+  localStorage.setItem('ms', JSON.stringify(minesStats));
+  updateAllStats();
+}
+
+function minesQBet(v)   { if(minesState==='idle') document.getElementById('minesBetInput').value = Math.min(v, balance); }
+function minesHalf()    { if(minesState==='idle') { const c=parseInt(document.getElementById('minesBetInput').value)||0; document.getElementById('minesBetInput').value=Math.max(1,Math.floor(c/2)); } }
+function minesDouble()  { if(minesState==='idle') { const c=parseInt(document.getElementById('minesBetInput').value)||0; document.getElementById('minesBetInput').value=Math.min(c*2||10,balance); } }
+function minesMax()     { if(minesState==='idle') document.getElementById('minesBetInput').value=balance; }
+
+document.getElementById('minesBetInput').addEventListener('input', function() { if (this.value!==''&&parseFloat(this.value)>balance) this.value=balance; if (this.value!==''&&parseFloat(this.value)<1) this.value=1; });
+document.getElementById('minesCountInput').addEventListener('input', function() { if (this.value!==''&&parseInt(this.value)>24) this.value=24; if (this.value!==''&&parseInt(this.value)<1) this.value=1; });
 
 // ═══════════════════════════════════════════════
 //  BOOT
 // ═══════════════════════════════════════════════
-renderCrashHistory();
-updateCrashStats();
-updateRoulStats();
-renderRouletteHistory();
-loadBalance().then(() => startCountdown());
+function bootAll() {
+  renderCrashHistory();
+  renderRouletteHistory();
+  updateAllStats();
+  initMinesGrid();
+  loadBalance().then(() => startCountdown());
+}
+bootAll();
 </script>
 </body>
 </html>
